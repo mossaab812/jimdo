@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Karou Mosaab | Marketing digital</title>
+<meta name="description" content="Karou Mosaab - Master 2 Marketing Digital, EHEC. Développement web, automatisation, photographie automobile.">
+<style>
+  :root{
+    --bg:#0b0f1a; --card:#141b2d; --line:#1f2a44;
+    --txt:#e8edf7; --muted:#9aa7c4; --acc:#ff7a1a; --acc2:#3ddcff;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:"Segoe UI",Tahoma,Arial,sans-serif;background:var(--bg);color:var(--txt);line-height:1.7}
+  a{color:var(--acc2);text-decoration:none}
+  img{max-width:100%;display:block}
+  /* ---------- NAV ---------- */
+  header{position:sticky;top:0;z-index:50;background:rgba(11,15,26,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+  .nav{max-width:1100px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 20px;flex-wrap:wrap}
+  .logo{font-weight:800;font-size:1.2rem;color:var(--txt)}
+  .logo span{color:var(--acc)}
+  .menu{display:flex;gap:6px;flex-wrap:wrap;list-style:none}
+  .menu a{color:var(--muted);padding:6px 12px;border-radius:8px;font-size:.92rem}
+  .menu a:hover{color:var(--txt);background:var(--card)}
+  .lang{display:flex;gap:6px}
+  .lang button{background:var(--card);border:1px solid var(--line);color:var(--txt);padding:5px 10px;border-radius:8px;cursor:pointer;font-size:.85rem}
+  .lang button.on{background:var(--acc);border-color:var(--acc);color:#111;font-weight:700}
+  /* ---------- LAYOUT ---------- */
+  section{max-width:1100px;margin:auto;padding:70px 20px;border-bottom:1px solid var(--line)}
+  h1{font-size:2.6rem;line-height:1.2;margin-bottom:12px}
+  h2{font-size:1.9rem;margin-bottom:18px}
+  h2::after{content:"";display:block;width:56px;height:4px;background:var(--acc);border-radius:4px;margin-top:8px}
+  h3{font-size:1.15rem;margin-bottom:6px;color:var(--acc2)}
+  p{color:var(--muted);margin-bottom:12px}
+  .hero{min-height:80vh;display:flex;align-items:center}
+  .tag{display:inline-block;background:var(--card);border:1px solid var(--line);padding:4px 12px;border-radius:999px;font-size:.85rem;color:var(--acc);margin-bottom:16px}
+  .btn{display:inline-block;margin:8px 10px 0 0;padding:12px 22px;border-radius:10px;font-weight:700;background:var(--acc);color:#111}
+  .btn.ghost{background:transparent;border:1px solid var(--acc2);color:var(--acc2)}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px;margin-top:20px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px}
+  .card .ico{font-size:1.8rem;margin-bottom:8px}
+  .bar{height:8px;background:var(--line);border-radius:6px;overflow:hidden;margin:6px 0 12px}
+  .bar i{display:block;height:100%;background:linear-gradient(90deg,var(--acc),var(--acc2))}
+  .social{display:flex;gap:12px;flex-wrap:wrap;margin-top:18px}
+  .social a{display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--line);padding:10px 16px;border-radius:12px;color:var(--txt);font-weight:600}
+  .social a:hover{border-color:var(--acc)}
+  .social svg{width:20px;height:20px;fill:currentColor}
+  .counter{margin-top:30px;padding:18px;background:var(--card);border:1px dashed var(--line);border-radius:14px;text-align:center}
+  footer{text-align:center;color:var(--muted);padding:30px 20px;font-size:.9rem}
+  [dir="rtl"] .menu a{font-family:Tahoma,Arial,sans-serif}
+  @media (max-width:640px){h1{font-size:2rem}section{padding:50px 18px}}
+</style>
+</head>
+<body>
+
+<header>
+  <nav class="nav">
+    <div class="logo">Karou<span>.</span>Mosaab</div>
+    <ul class="menu">
+      <li><a href="#accueil">Accueil</a></li>
+      <li><a href="#apropos">A propos de moi</a></li>
+      <li><a href="#travaux">Mes travaux</a></li>
+      <li><a href="#competences">Mes compétences</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <div class="lang">
+      <button data-lang="ar" class="on">عربي</button>
+      <button data-lang="fr">FR</button>
+      <button data-lang="en">EN</button>
+    </div>
+  </nav>
+</header>
+
+<!-- ============ ACCUEIL ============ -->
+<section id="accueil" class="hero">
+  <div>
+    <span class="tag" data-i18n="hero_tag"></span>
+    <h1 data-i18n="hero_title"></h1>
+    <p data-i18n="hero_text"></p>
+    <a class="btn" href="#travaux" data-i18n="btn_work"></a>
+    <a class="btn ghost" href="#contact" data-i18n="btn_contact"></a>
+  </div>
+</section>
+
+<!-- ============ A PROPOS DE MOI ============ -->
+<section id="apropos">
+  <h2 data-i18n="about_title"></h2>
+  <p data-i18n="about_text"></p>
+  <p data-i18n="about_text2"></p>
+  <!-- Bouton CV : remplacer CV_URL par l'adresse de la page Jimdo protégée par mot de passe -->
+  <a class="btn" href="CV_URL" data-i18n="btn_cv"></a>
+</section>
+
+<!-- ============ MES TRAVAUX ============ -->
+<section id="travaux">
+  <h2 data-i18n="work_title"></h2>
+  <div class="grid">
+    <div class="card"><div class="ico">📸</div><h3 data-i18n="w1_t"></h3><p data-i18n="w1_d"></p></div>
+    <div class="card"><div class="ico">💻</div><h3 data-i18n="w2_t"></h3><p data-i18n="w2_d"></p></div>
+    <div class="card"><div class="ico">⚙️</div><h3 data-i18n="w3_t"></h3><p data-i18n="w3_d"></p></div>
+    <div class="card"><div class="ico">📱</div><h3 data-i18n="w4_t"></h3><p data-i18n="w4_d"></p></div>
+  </div>
+</section>
+
+<!-- ============ MES COMPETENCES ============ -->
+<section id="competences">
+  <h2 data-i18n="skills_title"></h2>
+  <div class="grid">
+    <div class="card"><h3 data-i18n="s1"></h3><div class="bar"><i style="width:85%"></i></div></div>
+    <div class="card"><h3 data-i18n="s2"></h3><div class="bar"><i style="width:80%"></i></div></div>
+    <div class="card"><h3 data-i18n="s3"></h3><div class="bar"><i style="width:75%"></i></div></div>
+    <div class="card"><h3 data-i18n="s4"></h3><div class="bar"><i style="width:70%"></i></div></div>
+    <div class="card"><h3 data-i18n="s5"></h3><div class="bar"><i style="width:80%"></i></div></div>
+  </div>
+</section>
+
+<!-- ============ CONTACT ============ -->
+<section id="contact">
+  <h2 data-i18n="contact_title"></h2>
+  <p data-i18n="contact_text"></p>
+  <div class="social">
+    <!-- Remplacer # par vos liens réels -->
+    <a href="https://www.instagram.com/" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24"><path d="M12 2.2c3.2 0 3.6 0 4.8.1 3.3.1 4.8 1.7 4.9 4.9.1 1.3.1 1.6.1 4.8s0 3.6-.1 4.8c-.1 3.2-1.7 4.8-4.9 4.9-1.3.1-1.6.1-4.8.1s-3.6 0-4.8-.1c-3.3-.1-4.8-1.7-4.9-4.9C2.2 15.6 2.2 15.2 2.2 12s0-3.6.1-4.8C2.4 3.9 3.9 2.4 7.2 2.3 8.4 2.2 8.8 2.2 12 2.2zM12 0C8.7 0 8.3 0 7.1.1 2.7.3.3 2.7.1 7.1 0 8.3 0 8.7 0 12s0 3.7.1 4.9c.2 4.4 2.6 6.8 7 7C8.3 24 8.7 24 12 24s3.7 0 4.9-.1c4.4-.2 6.8-2.6 7-7 .1-1.2.1-1.6.1-4.9s0-3.7-.1-4.9c-.2-4.4-2.6-6.8-7-7C15.7 0 15.3 0 12 0zm0 5.8a6.2 6.2 0 100 12.4 6.2 6.2 0 000-12.4zM12 16a4 4 0 110-8 4 4 0 010 8zm6.4-11.8a1.4 1.4 0 100 2.9 1.4 1.4 0 000-2.9z"/></svg>
+      Instagram
+    </a>
+    <a href="https://www.linkedin.com/" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24"><path d="M20.4 20.5h-3.6v-5.6c0-1.3 0-3-1.8-3s-2.1 1.4-2.1 2.9v5.7H9.4V9h3.4v1.6c.5-.9 1.6-1.8 3.4-1.8 3.6 0 4.3 2.4 4.3 5.5v6.2zM5.3 7.4a2.1 2.1 0 110-4.1 2.1 2.1 0 010 4.1zM7.1 20.5H3.6V9h3.5v11.5z"/></svg>
+      LinkedIn
+    </a>
+    <a href="mailto:contact@example.com">✉️ Email</a>
+  </div>
+
+  <!-- ============ COMPTEUR DE VISITES ============ -->
+  <!-- Coller ici le code fourni par compteurdevisite.com (compteur de VISITEURS, pas de clics) -->
+  <div class="counter">
+    <small data-i18n="counter_label"></small>
+    <!-- CODE_COMPTEUR_COMPTEURDEVISITE -->
+  </div>
+</section>
+
+<footer>
+  <span data-i18n="footer"></span>
+</footer>
+
+<script>
+const T = {
+  ar: {
+    dir:"rtl",
+    hero_tag:"Master 2 تسويق رقمي - EHEC",
+    hero_title:"كارو مصعب (Karou Mosaab)",
+    hero_text:"مختص في التسويق الرقمي وتطوير الويب والأتمتة، وأصور السيارات احترافياً على إنستغرام.",
+    btn_work:"شوف أعمالي", btn_contact:"اتصل بي",
+    about_title:"من أنا",
+    about_text:"طالب ماستر 2 في التسويق الرقمي بالمدرسة العليا للتجارة (EHEC). عندي خبرة في تطوير الويب والأتمتة، وفي تصوير السيارات ونشرها على إنستغرام.",
+    about_text2:"ناشط في نادي HUC Alumni (التواصل) وفي قسم الموارد البشرية ضمن Company Discovery.",
+    btn_cv:"Mon CV - سيرتي الذاتية",
+    work_title:"أعمالي",
+    w1_t:"تصوير السيارات", w1_d:"تصوير وتحرير صور السيارات ونشرها على إنستغرام.",
+    w2_t:"تطوير الويب", w2_d:"تصميم مواقع بسيطة وسريعة ومتجاوبة مع الهواتف.",
+    w3_t:"الأتمتة", w3_d:"أتمتة المهام المتكررة لتوفير الوقت والجهد.",
+    w4_t:"صيانة الهواتف", w4_d:"تشخيص وإصلاح الهواتف الذكية.",
+    skills_title:"مهاراتي",
+    s1:"التسويق الرقمي", s2:"تطوير الويب (HTML/CSS/JS)", s3:"الأتمتة", s4:"التصوير والتحرير", s5:"التواصل والعلاقات العامة",
+    contact_title:"اتصل بي",
+    contact_text:"تحب تخدم معايا أو عندك سؤال؟ كتبلي في أي وقت.",
+    counter_label:"عداد الزوار",
+    footer:"© 2026 كارو مصعب - جميع الحقوق محفوظة"
+  },
+  fr: {
+    dir:"ltr",
+    hero_tag:"Master 2 Marketing Digital - EHEC",
+    hero_title:"Karou Mosaab",
+    hero_text:"Passionné par le marketing digital, le développement web et l'automatisation, et photographe automobile sur Instagram.",
+    btn_work:"Voir mes travaux", btn_contact:"Me contacter",
+    about_title:"A propos de moi",
+    about_text:"Étudiant en Master 2 Marketing Digital à l'EHEC. J'ai une expérience en développement web, en automatisation et en photographie automobile publiée sur Instagram.",
+    about_text2:"Membre actif de HUC Alumni (Communication) et du département RH dans le cadre de Company Discovery.",
+    btn_cv:"Mon CV",
+    work_title:"Mes travaux",
+    w1_t:"Photographie automobile", w1_d:"Prises de vue et retouche de voitures, publiées sur Instagram.",
+    w2_t:"Développement web", w2_d:"Sites simples, rapides et adaptés au mobile.",
+    w3_t:"Automatisation", w3_d:"Automatisation des tâches répétitives pour gagner du temps.",
+    w4_t:"Maintenance téléphonique", w4_d:"Diagnostic et réparation de smartphones.",
+    skills_title:"Mes compétences",
+    s1:"Marketing digital", s2:"Développement web (HTML/CSS/JS)", s3:"Automatisation", s4:"Photo & retouche", s5:"Communication & relations publiques",
+    contact_title:"Contact",
+    contact_text:"Une collaboration ou une question ? Écrivez-moi à tout moment.",
+    counter_label:"Compteur de visiteurs",
+    footer:"© 2026 Karou Mosaab - Tous droits réservés"
+  },
+  en: {
+    dir:"ltr",
+    hero_tag:"Master 2 Digital Marketing - EHEC",
+    hero_title:"Karou Mosaab",
+    hero_text:"Digital marketing, web development and automation enthusiast, and car photographer on Instagram.",
+    btn_work:"See my work", btn_contact:"Contact me",
+    about_title:"About me",
+    about_text:"Master 2 Digital Marketing student at EHEC. I have experience in web development, automation and car photography shared on Instagram.",
+    about_text2:"Active member of HUC Alumni (Communication) and the HR department within Company Discovery.",
+    btn_cv:"My CV",
+    work_title:"My work",
+    w1_t:"Car photography", w1_d:"Shooting and editing car photos, published on Instagram.",
+    w2_t:"Web development", w2_d:"Simple, fast, mobile-friendly websites.",
+    w3_t:"Automation", w3_d:"Automating repetitive tasks to save time and effort.",
+    w4_t:"Phone repair", w4_d:"Diagnosing and repairing smartphones.",
+    skills_title:"My skills",
+    s1:"Digital marketing", s2:"Web development (HTML/CSS/JS)", s3:"Automation", s4:"Photography & editing", s5:"Communication & PR",
+    contact_title:"Contact",
+    contact_text:"Collaboration or a question? Write to me anytime.",
+    counter_label:"Visitor counter",
+    footer:"© 2026 Karou Mosaab - All rights reserved"
+  }
+};
+
+function setLang(l){
+  const d = T[l];
+  document.documentElement.lang = l;
+  document.documentElement.dir = d.dir;
+  document.querySelectorAll("[data-i18n]").forEach(el=>{
+    const v = d[el.dataset.i18n];
+    if(v!==undefined) el.textContent = v;
+  });
+  document.querySelectorAll(".lang button").forEach(b=>b.classList.toggle("on", b.dataset.lang===l));
+  try{ localStorage.setItem("km_lang", l); }catch(e){}
+}
+document.querySelectorAll(".lang button").forEach(b=>b.addEventListener("click",()=>setLang(b.dataset.lang)));
+let saved = null; try{ saved = localStorage.getItem("km_lang"); }catch(e){}
+setLang(T[saved] ? saved : "ar");
+</script>
+</body>
+</html>
