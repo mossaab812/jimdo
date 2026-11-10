@@ -1,7 +1,15 @@
 # Template Jimdo (Design > Advanced > Custom Template)
 
-- **Onglet HTML** : coller le contenu de `template.html`. Garder exactement les `<var>...</var>` (navigation, sidebar, content, footer).
-- **Onglet CSS** : coller le contenu de `style.css`.
-- **Onglet Files** : téléverser `site/assets/karou.jpg` (photo) et l'utiliser dans le template si besoin (`<img src="karou.jpg">`).
+Fichiers générés par `python3 make_template.py` (à relancer après chaque modification de `site/multipage/build.py`) :
 
-Remarque : le template s'applique à toutes les pages. Le contenu propre à chaque rubrique se tape dans l'éditeur Jimdo de la page (zone `content`).
+- `template.html` : onglet **HTML** du Custom Template. Garder les `<var>` (navigation, sidebar, content, footer).
+- `style.css` : onglet **CSS** du Custom Template.
+- `karou.jpg` : onglet **Files** (photo).
+- `pages/*.html` : contenu de chaque rubrique. Dans Jimdo, sur la page correspondante, ajouter un élément **Code / HTML (Embed code)** et coller le fichier :
+  - `accueil.html` → Accueil
+  - `a-propos-de-moi.html` → A propos de moi
+  - `mes-travaux.html` → Mes travaux
+  - `mes-competences.html` → Mes compétences
+  - `contact.html` → Contact
+
+Ordre : 1) coller `template.html` et `style.css` dans Custom Template, 2) envoyer `karou.jpg` dans Files, 3) coller chaque fichier `pages/` dans sa page.

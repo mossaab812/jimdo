@@ -1,11 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css');
-/* Reset des styles Jimdo (liens rouges, marges, fonds) pour ne pas casser le design */
-#container, #container *{box-sizing:border-box}
-#container{background:#F5F2EA;color:#1C1812;font-family:'Plus Jakarta Sans','Cairo',system-ui,sans-serif;width:100%;max-width:none;margin:0;padding:0;float:none}
-#container a{color:inherit;text-decoration:none}
-#container img{max-width:100%;height:auto}
-#navigation a,#navigation li,#sidebar a{color:#1C1812}
 #container{
   --cream:#F5F2EA;--cream-2:#EFEBE0;--card:#FFFFFF;
   --dark:#1C1812;--dark-2:#2A241B;--amber:#FFA41B;--amber-2:#F7B23B;
@@ -160,11 +154,11 @@ footer{background:var(--dark);color:#CFC8B8;text-align:center;padding:40px 5% 34
 #container /* ---------- Animations ---------- */
 @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
 @keyframes spin{to{transform:rotate(360deg)}}
-#container .reveal{opacity:0;transform:translateY(26px);transition:opacity .7s ease,transform .7s ease}
-#container .reveal.in{opacity:1;transform:none}
+#container html.js .reveal{opacity:0;transform:translateY(26px);transition:opacity .7s ease,transform .7s ease}
+#container html.js .reveal.in{opacity:1;transform:none}
 @media (prefers-reduced-motion:reduce){
 #container *{animation:none!important;transition:none!important;scroll-behavior:auto!important}
-#container .reveal{opacity:1;transform:none}
+#container html.js .reveal{opacity:1;transform:none}
 }
 #container /* ---------- Responsive ---------- */
 @media (max-width:1000px){
@@ -201,3 +195,24 @@ footer{background:var(--dark);color:#CFC8B8;text-align:center;padding:40px 5% 34
 
 }
 
+
+/* ---- Corrections pour Jimdo ---- */
+html,body{background:#F5F2EA!important;margin:0!important;padding:0!important}
+#container{min-height:100vh;background:#F5F2EA;color:#1C1812}
+#container *{box-sizing:border-box}
+#container a{color:inherit;text-decoration:none}
+#container img{max-width:100%;height:auto}
+/* Navigation Jimdo : pilules au lieu de liens bruts */
+#navigation{max-width:1160px;margin:18px auto 0;padding:0 5%;text-align:center}
+#navigation ul{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;list-style:none;padding:0;margin:0}
+#navigation li{list-style:none;margin:0;padding:0}
+#navigation a{display:inline-block;padding:9px 16px;border-radius:999px;background:#fff;box-shadow:0 8px 20px rgba(28,24,18,.08);font-weight:700;font-size:.92rem;color:#1C1812;transition:background .25s}
+#navigation a:hover,#navigation a.current,#navigation a.active,#navigation li.current a,#navigation li.active a{background:#FFA41B}
+/* Contenu : pas de masquage à l'apparition (le JS n'est pas garanti dans Jimdo) */
+#content{max-width:1160px;margin:0 auto}
+.reveal{opacity:1!important;transform:none!important;transition:none!important}
+/* Pied de page */
+#footer{text-align:center;color:#6E6759;padding:30px 5% 30px;font-size:.9rem;margin-top:50px}
+#footer .social{margin-top:16px}
+#footer .social a{font-size:1.05rem;width:46px;height:46px}
+#footer .gutter{padding-bottom:14px}

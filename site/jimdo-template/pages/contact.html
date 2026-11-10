@@ -1,0 +1,52 @@
+
+<main>
+<section style="padding-top:80px">
+  <div class="wrap">
+    <div class="head reveal">
+      <span data-i18n="btn_contact" class="eyebrow">Me contacter</span>
+      <h2><span data-i18n="contact_a">Parlons</span> <span class="hl"><span data-i18n="contact_b">ensemble</span></span></h2>
+      <p><p data-i18n="contact_sub">Une collaboration, une question ? Écrivez-moi.</p></p>
+    </div>
+    <form class="form reveal" id="contactForm">
+      <input name="name" required placeholder="Votre nom" data-i18n-ph="f_name">
+      <input name="email" type="email" required placeholder="Votre e-mail" data-i18n-ph="f_email">
+      <textarea name="message" required placeholder="Votre message" data-i18n-ph="f_msg"></textarea>
+      <button class="btn btn-amber" type="submit"><span data-i18n="f_send">Envoyer</span><span class="arr"><i class="fa-solid fa-paper-plane">&#xf1d8;</i></span></button>
+    </form>
+    <div class="reveal">
+      <div class="social">
+    <a href="https://www.instagram.com/mk.venatus/" target="_blank" rel="noopener" title="Instagram"><i class="fa-brands fa-instagram">&#xf16d;</i></a>
+    <a href="https://www.facebook.com/share/18R3j19EPu/" target="_blank" rel="noopener" title="Facebook"><i class="fa-brands fa-facebook-f">&#xf39e;</i></a>
+    <a href="https://www.linkedin.com/in/mosaab~karou" target="_blank" rel="noopener" title="LinkedIn"><i class="fa-brands fa-linkedin-in">&#xf0e1;</i></a>
+    <a href="https://youtube.com/@kazunari812" target="_blank" rel="noopener" title="YouTube"><i class="fa-brands fa-youtube">&#xf167;</i></a>
+  </div>
+    </div>
+    <!-- Compteur de visiteurs (compteurdevisite.com) -->
+    <div class="counter reveal">
+      <p data-i18n="counter_label" style="margin-bottom:10px">Compteur de visiteurs</p>
+      <div id="sfch4e1us4hpqpj9ym3sb2j3uf7bn8p5e3w"></div>
+<script type="text/javascript" src="https://counter6.optistats.ovh/private/counter.js?c=h4e1us4hpqpj9ym3sb2j3uf7bn8p5e3w&down=async" async></script>
+<noscript><a href="https://www.compteurdevisite.com" title="compteur internet"><img src="https://counter6.optistats.ovh/private/compteurdevisite.php?c=h4e1us4hpqpj9ym3sb2j3uf7bn8p5e3w" border="0" title="compteur internet" alt="compteur internet"></a></noscript>
+    </div>
+  </div>
+</section>
+</main>
+<script>
+(function(){
+  document.querySelectorAll('.svc').forEach(function(item){
+    function toggle(){
+      var open = item.classList.contains('open');
+      document.querySelectorAll('.svc.open').forEach(function(o){ o.classList.remove('open'); });
+      if (!open) item.classList.add('open');
+    }
+    item.addEventListener('click', toggle);
+  });
+  var form = document.getElementById('contactForm');
+  if (form) form.addEventListener('submit', function(ev){
+    ev.preventDefault();
+    var n = form.name.value, m = form.email.value, t = form.message.value;
+    var body = 'Nom: ' + n + '\nE-mail: ' + m + '\n\n' + t;
+    window.location.href = 'mailto:mossaabmanant19@gmail.com?subject=' + encodeURIComponent('Contact via portfolio - ' + n) + '&body=' + encodeURIComponent(body);
+  });
+})();
+</script>
