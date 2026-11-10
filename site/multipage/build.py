@@ -417,6 +417,23 @@ JS = """
 """
 
 
+ICON_CODES = {'fa-instagram': 'f16d', 'fa-facebook-f': 'f39e', 'fa-linkedin-in': 'f0e1', 'fa-youtube': 'f167', 'fa-envelope': 'f0e0', 'fa-arrow-right': 'f061', 'fa-arrow-up-right': 'f08e', 'fa-bars': 'f0c9', 'fa-graduation-cap': 'f19d', 'fa-bullhorn': 'f0a1', 'fa-code': 'f121', 'fa-camera': 'f030', 'fa-globe': 'f0ac', 'fa-robot': 'f544', 'fa-gears': 'f085', 'fa-mobile-screen-button': 'f3cd', 'fa-lock': 'f023', 'fa-key': 'f084', 'fa-paper-plane': 'f1d8'}
+
+
+def fix_icons(html):
+    """Remplace les <i> vides par le glyphe Font Awesome (sinon Tidy/Jimdo les supprime)."""
+    import re
+
+    def rep(m):
+        cls = m.group(1)
+        for name, cp in ICON_CODES.items():
+            if name in cls.split():
+                return '<i class="%s">&#x%s;</i>' % (cls, cp)
+        return m.group(0)
+
+    return re.sub(r'<i class="([^"]*)"></i>', rep, html)
+
+
 def dict_js():
     return JS.replace("__DICT__", json.dumps(T, ensure_ascii=False)).replace("__EMAIL__", EMAIL)
 
@@ -707,7 +724,7 @@ DESCS = {
 
 if __name__ == "__main__":
     for href, label in PAGES:
-        html = page_shell(f"{label} | Karou Mosaab", DESCS[href], href, BODY[href])
+        html = fix_icons(page_shell(f"{label} | Karou Mosaab", DESCS[href], href, BODY[href]))
         with open(os.path.join(HERE, href), "w", encoding="utf-8") as f:
             f.write(html)
         print("écrit", href, len(html))
