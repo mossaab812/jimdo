@@ -216,7 +216,7 @@ html,body{background:#F5F2EA!important;margin:0!important;padding:0!important}
 #footer .gutter{padding-bottom:14px}
 
 /* ===== Accueil : style premium noir & or ===== */
-.km-home{background:#0E0D0B;color:#F3EDE2;font-family:'Plus Jakarta Sans','Cairo',system-ui,sans-serif;line-height:1.7;width:100vw;position:relative;left:50%;margin-left:-50vw;padding:0 0 70px;overflow:hidden;text-align:center}
+.km-home{background:#0E0D0B;color:#F3EDE2;font-family:'Plus Jakarta Sans','Cairo',system-ui,sans-serif;line-height:1.7;width:100%;margin:0;padding:0 0 70px;overflow:hidden;text-align:center}
 .km-home *{box-sizing:border-box}
 .km-home a{color:inherit;text-decoration:none}
 .km-home p{margin:0}

@@ -9,6 +9,7 @@ Usage : python3 make_template.py
 import base64
 import json
 import os
+import re
 import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -35,7 +36,7 @@ BLACK = "#0E0D0B"
 # ---------- Style de la page d'accueil (dans style.css, pas dans l'embed) ----------
 HOME_CSS = """
 /* ===== Accueil : style premium noir & or ===== */
-.km-home{background:#0E0D0B;color:#F3EDE2;font-family:'Plus Jakarta Sans','Cairo',system-ui,sans-serif;line-height:1.7;width:100vw;position:relative;left:50%;margin-left:-50vw;padding:0 0 70px;overflow:hidden;text-align:center}
+.km-home{background:#0E0D0B;color:#F3EDE2;font-family:'Plus Jakarta Sans','Cairo',system-ui,sans-serif;line-height:1.7;width:100%;margin:0;padding:0 0 70px;overflow:hidden;text-align:center}
 .km-home *{box-sizing:border-box}
 .km-home a{color:inherit;text-decoration:none}
 .km-home p{margin:0}
@@ -295,6 +296,11 @@ PAGE_SCRIPT = """<script>
 </script>""" % build.EMAIL
 
 
+def nbsp_icons(html):
+    """Le glyphe vient du CSS Font Awesome : on met une espace insécable (non vide)."""
+    return re.sub(r'<i class="([^"]*)">&#x[0-9a-fA-F]+;</i>', r'<i class="\1">&nbsp;</i>', html)
+
+
 def jimdo_links(html):
     for src, dst in JIMDO_URL.items():
         html = html.replace(f'href="{src}"', f'href="{dst}"')
@@ -342,13 +348,13 @@ def main():
 </div>
 """
     with open(os.path.join(HERE, "template.html"), "w", encoding="utf-8") as f:
-        f.write(template)
+        f.write(nbsp_icons(template))
 
     os.makedirs(os.path.join(HERE, "pages"), exist_ok=True)
     with open(os.path.join(HERE, "pages", "accueil.html"), "w", encoding="utf-8") as f:
-        f.write(build_home())
+        f.write(nbsp_icons(build_home()))
     for src, fname in PAGE_FILE.items():
-        body = build.fix_icons(jimdo_links(build.BODY[src]))
+        body = nbsp_icons(build.fix_icons(jimdo_links(build.BODY[src])))
         with open(os.path.join(HERE, "pages", fname), "w", encoding="utf-8") as f:
             f.write(body + "\n" + PAGE_SCRIPT + "\n")
     print("OK : style.css, template.html, pages/*.html")
