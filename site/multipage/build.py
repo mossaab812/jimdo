@@ -1,0 +1,451 @@
+#!/usr/bin/env python3
+"""Génère 5 pages HTML autonomes (une par rubrique Jimdo).
+Chaque fichier contient son CSS et son JS : il suffit de coller le fichier
+complet dans un élément « Code / HTML (Embed code) » de la page Jimdo correspondante.
+Usage : python3 build.py
+"""
+import base64
+import json
+import os
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+EMAIL = "mossaabmanant19@gmail.com"
+PHOTO = os.path.join(HERE, "..", "assets", "karou.jpg")
+PHOTO_SRC = "data:image/jpeg;base64," + base64.b64encode(open(PHOTO, "rb").read()).decode()
+INSTAGRAM = "https://www.instagram.com/mk.venatus/"
+FACEBOOK = "https://www.facebook.com/share/18R3j19EPu/"
+LINKEDIN = "https://www.linkedin.com/in/mosaab~karou"
+YOUTUBE = "https://youtube.com/@kazunari812"
+CV_URL = "REMPLACER_PAR_URL_MON_CV"
+COUNTER = (
+    '<div id="sfch4e1us4hpqpj9ym3sb2j3uf7bn8p5e3w"></div>\n'
+    '<script type="text/javascript" src="https://counter6.optistats.ovh/private/counter.js?c=h4e1us4hpqpj9ym3sb2j3uf7bn8p5e3w&down=async" async></script>\n'
+    '<noscript><a href="https://www.compteurdevisite.com" title="compteur internet"><img src="https://counter6.optistats.ovh/private/compteurdevisite.php?c=h4e1us4hpqpj9ym3sb2j3uf7bn8p5e3w" border="0" title="compteur internet" alt="compteur internet"></a></noscript>'
+)
+
+# ---------------- Traductions (FR par défaut, AR, EN) ----------------
+T = {
+    "fr": {
+        "badge": "🟢 Ouvert aux opportunités",
+        "hero_sub": "Étudiant en Master 2 Marketing Digital à l'EHEC. Je combine stratégie marketing, développement web, automatisation et photographie automobile.",
+        "btn_work": "Voir mes travaux", "btn_contact": "Me contacter",
+        "hl1_t": "Marketing digital", "hl1_d": "Stratégie, contenu et présence en ligne.",
+        "hl2_t": "Web & automatisation", "hl2_d": "Sites rapides et tâches automatisées.",
+        "hl3_t": "Photo automobile", "hl3_d": "Prise de vue et retouche, publiées sur Instagram.",
+        "about_t": "À propos de moi",
+        "about_p1": "Étudiant en Master 2 Marketing Digital à l'EHEC, je m'intéresse à la façon dont la technologie et la stratégie se rencontrent pour créer de la valeur.",
+        "about_p2": "Je pratique le développement web, l'automatisation et la photographie automobile, et je reste ouvert à de nouveaux apprentissages.",
+        "exp_t": "Vie associative", "exp_d": "HUC Alumni : membre du département RH & Communication (Company Discovery).",
+        "btn_cv": "🔒 Accéder à Mon CV", "cv_note": "Le CV est protégé par mot de passe.",
+        "works_t": "Mes travaux", "works_sub": "Quelques réalisations et domaines de travail.",
+        "w1_t": "Photographie automobile", "w1_d": "Prises de vue et retouche de véhicules, publiées sur Instagram.",
+        "w2_t": "Sites web", "w2_d": "Pages web simples, rapides et adaptées au mobile.",
+        "w3_t": "Automatisation", "w3_d": "Scripts et workflows qui simplifient les tâches répétitives.",
+        "btn_insta": "Voir la galerie sur Instagram",
+        "skills_t": "Mes compétences", "skills_sub": "Services et compétences que je développe.",
+        "s1_t": "Marketing digital", "s1_d": "Stratégie de contenu, réseaux sociaux et analyse de la présence en ligne.",
+        "s2_t": "Développement web", "s2_d": "Création de pages web avec HTML, CSS et JavaScript.",
+        "s3_t": "Automatisation", "s3_d": "Automatiser les tâches répétitives pour gagner du temps.",
+        "s4_t": "Photographie automobile", "s4_d": "Prise de vue créative et retouche de véhicules.",
+        "s5_t": "Maintenance smartphones", "s5_d": "Initiation au diagnostic et à la réparation des smartphones.",
+        "contact_t": "Contact", "contact_sub": "Une collaboration, une question ? Écrivez-moi.",
+        "f_name": "Votre nom", "f_email": "Votre e-mail", "f_msg": "Votre message", "f_send": "Envoyer",
+        "social_t": "Retrouvez-moi sur", "counter_label": "📊 Compteur de visiteurs",
+        "footer": "© 2026 Karou Mosaab · Tous droits réservés",
+    },
+    "ar": {
+        "badge": "🟢 متاح للفرص",
+        "hero_sub": "طالب ماستر 2 تسويق رقمي في EHEC. أجمع بين الاستراتيجية التسويقية وتطوير الويب والأتمتة وتصوير السيارات.",
+        "btn_work": "شوف أعمالي", "btn_contact": "اتصل بي",
+        "hl1_t": "التسويق الرقمي", "hl1_d": "استراتيجية، محتوى، وحضور قوي على الإنترنت.",
+        "hl2_t": "الويب والأتمتة", "hl2_d": "مواقع سريعة ومهام آلية توفر الوقت.",
+        "hl3_t": "تصوير السيارات", "hl3_d": "تصوير وتحرير صور تُنشر على إنستغرام.",
+        "about_t": "من أنا",
+        "about_p1": "طالب ماستر 2 تسويق رقمي في EHEC، مهتم بكيفاش التكنولوجيا والاستراتيجية تتلاقاو باش يخلقو قيمة.",
+        "about_p2": "نمارس تطوير الويب والأتمتة وتصوير السيارات، ونبقى مفتوحين لتعلم جديد.",
+        "exp_t": "النشاط الجمعوي", "exp_d": "نادي HUC Alumni: عضو قسم الموارد البشرية والاتصال (Company Discovery).",
+        "btn_cv": "🔒 سيرتي الذاتية", "cv_note": "السيرة الذاتية محمية بكلمة مرور.",
+        "works_t": "أعمالي", "works_sub": "بعض الإنجازات ومجالات العمل.",
+        "w1_t": "تصوير السيارات", "w1_d": "تصوير وتحرير صور السيارات المنشورة على إنستغرام.",
+        "w2_t": "مواقع الويب", "w2_d": "صفحات ويب بسيطة وسريعة ومتجاوبة مع الهاتف.",
+        "w3_t": "الأتمتة", "w3_d": "سكريبتات وworkflows تبسط المهام المتكررة.",
+        "btn_insta": "شوف المعرض على إنستغرام",
+        "skills_t": "مهاراتي", "skills_sub": "الخدمات والمهارات اللي نطورها.",
+        "s1_t": "التسويق الرقمي", "s1_d": "استراتيجية المحتوى، شبكات التواصل، وتحليل الحضور على الإنترنت.",
+        "s2_t": "تطوير الويب", "s2_d": "إنشاء صفحات ويب بـ HTML وCSS وJavaScript.",
+        "s3_t": "الأتمتة", "s3_d": "أتمتة المهام المتكررة باش توفر الوقت.",
+        "s4_t": "تصوير السيارات", "s4_d": "تصوير إبداعي وتحرير صور السيارات.",
+        "s5_t": "صيانة الهواتف", "s5_d": "مبادئ أولية في تشخيص وإصلاح الهواتف الذكية.",
+        "contact_t": "اتصل بي", "contact_sub": "تعاون ولا سؤال؟ كتبلي.",
+        "f_name": "الاسم", "f_email": "الإيميل", "f_msg": "الرسالة", "f_send": "إرسال",
+        "social_t": "تابعني على", "counter_label": "📊 عداد الزوار",
+        "footer": "© 2026 كارو مصعب · جميع الحقوق محفوظة",
+    },
+    "en": {
+        "badge": "🟢 Open to opportunities",
+        "hero_sub": "Master 2 Digital Marketing student at EHEC. I combine marketing strategy, web development, automation and automotive photography.",
+        "btn_work": "See my work", "btn_contact": "Contact me",
+        "hl1_t": "Digital marketing", "hl1_d": "Strategy, content and online presence.",
+        "hl2_t": "Web & automation", "hl2_d": "Fast websites and automated workflows.",
+        "hl3_t": "Automotive photo", "hl3_d": "Shooting and editing, published on Instagram.",
+        "about_t": "About me",
+        "about_p1": "Master 2 Digital Marketing student at EHEC, interested in where technology and strategy meet to create value.",
+        "about_p2": "I practise web development, automation and car photography, and I am always eager to learn.",
+        "exp_t": "Student life", "exp_d": "HUC Alumni: member of the HR & Communication department (Company Discovery).",
+        "btn_cv": "🔒 Access My CV", "cv_note": "The CV is password protected.",
+        "works_t": "My work", "works_sub": "Some achievements and areas of work.",
+        "w1_t": "Automotive photography", "w1_d": "Car shoots and editing, published on Instagram.",
+        "w2_t": "Websites", "w2_d": "Simple, fast, mobile-friendly web pages.",
+        "w3_t": "Automation", "w3_d": "Scripts and workflows that simplify repetitive tasks.",
+        "btn_insta": "View the gallery on Instagram",
+        "skills_t": "My skills", "skills_sub": "Services and skills I am developing.",
+        "s1_t": "Digital marketing", "s1_d": "Content strategy, social networks and online presence analysis.",
+        "s2_t": "Web development", "s2_d": "Building web pages with HTML, CSS and JavaScript.",
+        "s3_t": "Automation", "s3_d": "Automating repetitive tasks to save time.",
+        "s4_t": "Automotive photography", "s4_d": "Creative shooting and car photo editing.",
+        "s5_t": "Smartphone repair", "s5_d": "Beginner-level diagnosis and repair of smartphones.",
+        "contact_t": "Contact", "contact_sub": "A collaboration or a question? Write to me.",
+        "f_name": "Your name", "f_email": "Your e-mail", "f_msg": "Your message", "f_send": "Send",
+        "social_t": "Follow me on", "counter_label": "📊 Visitor counter",
+        "footer": "© 2026 Karou Mosaab · All rights reserved",
+    },
+}
+
+PAGES = [
+    ("index.html", "Accueil"),
+    ("about.html", "A propos de moi"),
+    ("works.html", "Mes travaux"),
+    ("skills.html", "Mes compétences"),
+    ("contact.html", "Contact"),
+]
+
+CSS = """
+:root{--bg:#FAF9F5;--cream:#F4F1EA;--card:#FFFFFF;--accent:#FF7A00;--coral:#F95738;--ink:#1A1A1A;--muted:#5C5C5C;--line:#ECE7DD;--shadow:0 10px 30px rgba(26,26,26,.08)}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Plus Jakarta Sans','Poppins','Cairo',system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.65}
+[dir=rtl] body{font-family:'Cairo','Plus Jakarta Sans',system-ui,sans-serif}
+a{color:inherit;text-decoration:none}
+img{max-width:100%;display:block}
+.topbar{position:sticky;top:0;z-index:100;background:rgba(250,249,245,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.wrap{max-width:1140px;margin:auto;padding:0 5%}
+.nav{display:flex;align-items:center;justify-content:space-between;gap:16px;height:70px;position:relative}
+.logo{font-weight:800;font-size:1.15rem;letter-spacing:.3px}
+.logo span{color:var(--accent)}
+.menu{display:flex;gap:4px;list-style:none;flex-wrap:wrap}
+.menu a{display:block;padding:8px 12px;border-radius:999px;font-size:.92rem;color:var(--muted);font-weight:500;transition:.25s}
+.menu a:hover,.menu a.on{color:var(--ink);background:var(--cream)}
+.menu a.on{box-shadow:inset 0 0 0 1.5px var(--accent)}
+.lang{display:flex;gap:8px}
+.lang button{background:var(--card);border:1px solid var(--line);color:var(--ink);padding:6px 10px;border-radius:8px;cursor:pointer;font-size:.8rem;font-weight:600;transition:.2s}
+.lang button.on,.lang button:hover{background:var(--accent);border-color:var(--accent);color:#fff}
+.burger{display:none;background:var(--card);border:1px solid var(--line);border-radius:8px;padding:6px 10px;cursor:pointer;font-size:1rem}
+section{padding:84px 0}
+.alt{background:var(--cream)}
+.eyebrow{display:inline-block;font-size:.8rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);margin-bottom:10px}
+h1{font-size:3.1rem;line-height:1.12;font-weight:800;margin-bottom:16px}
+h2{font-size:2.1rem;line-height:1.2;font-weight:800;margin-bottom:12px}
+h3{font-size:1.15rem;font-weight:700;margin-bottom:8px}
+p{color:var(--muted);margin-bottom:14px}
+.sub{max-width:620px;margin-bottom:40px;font-size:1.05rem}
+.head{text-align:center}
+.head .sub{margin-left:auto;margin-right:auto}
+.hero{display:grid;grid-template-columns:1.1fr .9fr;gap:50px;align-items:center;padding:70px 0}
+.hero .sub{font-size:1.1rem}
+.badge{display:inline-flex;align-items:center;gap:8px;background:var(--card);box-shadow:var(--shadow);padding:8px 16px;border-radius:999px;font-size:.88rem;font-weight:600;margin-bottom:22px;animation:float 3.5s ease-in-out infinite}
+.photo{position:relative;justify-self:center;z-index:0}
+.photo img{width:min(380px,100%);aspect-ratio:3/4;object-fit:cover;object-position:center 20%;border-radius:28px;box-shadow:var(--shadow)}
+.photo::before{content:"";position:absolute;inset:-14px -14px 14px 14px;border-radius:32px;background:linear-gradient(135deg,var(--accent),var(--coral));z-index:-1;opacity:.9}
+.chip{position:absolute;bottom:22px;left:-18px;background:var(--card);box-shadow:var(--shadow);padding:10px 16px;border-radius:14px;font-weight:700;font-size:.9rem;animation:float 4s ease-in-out infinite}
+[dir=rtl] .chip{left:auto;right:-18px}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.btns{display:flex;gap:12px;flex-wrap:wrap;margin-top:10px}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:13px 24px;border-radius:12px;font-weight:700;font-size:.95rem;transition:transform .25s,box-shadow .25s,background .25s;border:none;cursor:pointer;font-family:inherit}
+.btn-primary{background:var(--accent);color:#fff;box-shadow:0 8px 20px rgba(255,122,0,.3)}
+.btn-ghost{background:var(--card);color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--line)}
+.btn-lock{background:var(--coral);color:#fff;box-shadow:0 8px 20px rgba(249,87,56,.3)}
+.btn:hover{transform:translateY(-3px)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:22px}
+.card{background:var(--card);border-radius:20px;padding:28px;box-shadow:var(--shadow);transition:transform .3s,box-shadow .3s;border:1px solid transparent}
+.card:hover{transform:translateY(-6px);box-shadow:0 18px 40px rgba(26,26,26,.12);border-color:var(--line)}
+.ico{width:52px;height:52px;border-radius:14px;display:grid;place-items:center;background:linear-gradient(135deg,#FFF1E4,#FFE2D6);color:var(--accent);font-size:1.3rem;margin-bottom:16px}
+.about{display:grid;grid-template-columns:.8fr 1.2fr;gap:50px;align-items:center}
+.about img{border-radius:26px;box-shadow:var(--shadow);aspect-ratio:3/4;object-fit:cover;object-position:center 20%;width:100%;max-width:360px;justify-self:center}
+.exp{margin-top:22px;background:var(--card);border-radius:18px;padding:22px;box-shadow:var(--shadow);border-left:4px solid var(--accent)}
+[dir=rtl] .exp{border-left:none;border-right:4px solid var(--accent)}
+.cvbox{margin-top:26px}
+.cvbox small{display:block;color:var(--muted);margin-top:8px}
+.social{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin:18px 0 0}
+.social a{width:52px;height:52px;border-radius:16px;background:var(--card);box-shadow:var(--shadow);display:grid;place-items:center;font-size:1.3rem;color:var(--ink);transition:.25s}
+.social a:hover{background:var(--accent);color:#fff;transform:translateY(-4px)}
+.form{max-width:640px;margin:0 auto;background:var(--card);border-radius:24px;padding:32px;box-shadow:var(--shadow);display:grid;gap:14px}
+.form input,.form textarea{width:100%;padding:14px 16px;border-radius:12px;border:1px solid var(--line);background:var(--bg);font:inherit;color:var(--ink);transition:.2s}
+.form input:focus,.form textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 4px rgba(255,122,0,.15)}
+.form textarea{min-height:130px;resize:vertical}
+.counter{max-width:640px;margin:34px auto 0;text-align:center;background:var(--card);border-radius:20px;padding:22px;box-shadow:var(--shadow)}
+footer{text-align:center;color:var(--muted);padding:34px 5%;font-size:.9rem;border-top:1px solid var(--line)}
+footer .social{margin-top:14px}
+html.js .reveal{opacity:0;transform:translateY(24px);transition:opacity .7s ease,transform .7s ease}
+html.js .reveal.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}html.js .reveal{opacity:1;transform:none}}
+@media (max-width:900px){
+  .hero,.about{grid-template-columns:1fr;text-align:center;gap:34px}
+  .hero .btns,.btns{justify-content:center}
+  .chip{left:50%;transform:translateX(-50%);bottom:-18px}
+  [dir=rtl] .chip{right:50%;left:auto}
+  .exp{text-align:left}
+  h1{font-size:2.4rem}h2{font-size:1.7rem}
+  section{padding:60px 0}
+}
+@media (max-width:760px){
+  .burger{display:block}
+  .menu{display:none;position:absolute;top:70px;left:0;right:0;background:var(--bg);flex-direction:column;padding:12px 5%;border-bottom:1px solid var(--line);gap:6px}
+  .menu.open{display:flex}
+  .menu a{padding:12px 14px}
+}
+"""
+
+JS = """
+(function(){
+  var DICT = __DICT__;
+  var EMAIL = "__EMAIL__";
+  document.documentElement.classList.add('js');
+
+  var burger = document.getElementById('burger'), menu = document.getElementById('menu');
+  if (burger) burger.addEventListener('click', function(){ menu.classList.toggle('open'); });
+
+  function setLang(l){
+    var d = DICT[l]; if (!d) return;
+    document.documentElement.lang = l;
+    document.documentElement.dir = (l === 'ar') ? 'rtl' : 'ltr';
+    document.querySelectorAll('[data-i18n]').forEach(function(el){
+      var k = el.getAttribute('data-i18n'); if (d[k] !== undefined) el.textContent = d[k];
+    });
+    document.querySelectorAll('[data-i18n-ph]').forEach(function(el){
+      var k = el.getAttribute('data-i18n-ph'); if (d[k] !== undefined) el.setAttribute('placeholder', d[k]);
+    });
+    document.querySelectorAll('.lang button').forEach(function(b){ b.classList.toggle('on', b.dataset.lang === l); });
+    try { localStorage.setItem('km_lang', l); } catch(e){}
+  }
+  document.querySelectorAll('.lang button').forEach(function(b){
+    b.addEventListener('click', function(){ setLang(b.dataset.lang); });
+  });
+  var saved = null; try { saved = localStorage.getItem('km_lang'); } catch(e){}
+  setLang(DICT[saved] ? saved : 'fr');
+
+  var items = document.querySelectorAll('.reveal');
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){ if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+    }, { threshold: 0.12 });
+    items.forEach(function(el){ io.observe(el); });
+  } else { items.forEach(function(el){ el.classList.add('in'); }); }
+
+  var form = document.getElementById('contactForm');
+  if (form) form.addEventListener('submit', function(ev){
+    ev.preventDefault();
+    var n = form.name.value, m = form.email.value, t = form.message.value;
+    var body = 'Nom: ' + n + '\\nE-mail: ' + m + '\\n\\n' + t;
+    window.location.href = 'mailto:' + EMAIL + '?subject=' + encodeURIComponent('Contact via portfolio - ' + n) + '&body=' + encodeURIComponent(body);
+  });
+})();
+"""
+
+
+def dict_js():
+    return JS.replace("__DICT__", json.dumps(T, ensure_ascii=False)).replace("__EMAIL__", EMAIL)
+
+
+def page_shell(title, desc, active, body):
+    nav_items = "".join(
+        '<li><a href="%s"%s>%s</a></li>' % (href, ' class="on"' if href == active else "", label)
+        for href, label in PAGES)
+    return f"""<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{title}</title>
+<meta name="description" content="{desc}">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>{CSS}</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="wrap nav">
+    <a class="logo" href="index.html">KAROU<span>.</span>MOSAAB</a>
+    <button class="burger" id="burger" aria-label="Menu"><i class="fa-solid fa-bars"></i></button>
+    <ul class="menu" id="menu">{nav_items}</ul>
+    <div class="lang">
+      <button data-lang="fr" class="on">FR</button>
+      <button data-lang="ar">عربي</button>
+      <button data-lang="en">EN</button>
+    </div>
+  </div>
+</header>
+{body}
+<footer>
+  <span data-i18n="footer">{T['fr']['footer']}</span>
+  <div class="social">
+    <a href="{INSTAGRAM}" target="_blank" rel="noopener" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
+    <a href="{FACEBOOK}" target="_blank" rel="noopener" title="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+    <a href="{LINKEDIN}" target="_blank" rel="noopener" title="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+    <a href="{YOUTUBE}" target="_blank" rel="noopener" title="YouTube"><i class="fa-brands fa-youtube"></i></a>
+  </div>
+</footer>
+<script>{dict_js()}</script>
+</body>
+</html>
+"""
+
+
+def ico(c):
+    return f'<div class="ico"><i class="fa-solid {c}"></i></div>'
+
+
+def icob(c):
+    return f'<div class="ico"><i class="fa-brands {c}"></i></div>'
+
+
+def card(icon, k):
+    return (f'<div class="card reveal">{ico(icon)}'
+            f'<h3 data-i18n="{k}_t">{T["fr"][k + "_t"]}</h3>'
+            f'<p data-i18n="{k}_d">{T["fr"][k + "_d"]}</p></div>')
+
+
+BODY = {}
+
+BODY["index.html"] = f"""
+<main>
+<section class="wrap">
+  <div class="hero">
+    <div class="reveal">
+      <span class="badge" data-i18n="badge">{T['fr']['badge']}</span>
+      <h1>Karou Mosaab</h1>
+      <p class="sub" data-i18n="hero_sub">{T['fr']['hero_sub']}</p>
+      <div class="btns">
+        <a class="btn btn-primary" href="works.html"><span data-i18n="btn_work">{T['fr']['btn_work']}</span> <i class="fa-solid fa-arrow-right"></i></a>
+        <a class="btn btn-ghost" href="contact.html" data-i18n="btn_contact">{T['fr']['btn_contact']}</a>
+      </div>
+    </div>
+    <div class="photo reveal">
+      <img src="{PHOTO_SRC}" alt="Karou Mosaab">
+      <div class="chip">Master 2 · EHEC</div>
+    </div>
+  </div>
+</section>
+<section class="alt">
+  <div class="wrap grid">
+    {card('fa-bullhorn', 'hl1')}
+    {card('fa-code', 'hl2')}
+    {card('fa-camera', 'hl3')}
+  </div>
+</section>
+</main>"""
+
+BODY["about.html"] = f"""
+<main>
+<section class="wrap">
+  <div class="about">
+    <div class="reveal"><img src="{PHOTO_SRC}" alt="Karou Mosaab"></div>
+    <div class="reveal">
+      <span class="eyebrow">Karou Mosaab</span>
+      <h2 data-i18n="about_t">{T['fr']['about_t']}</h2>
+      <p data-i18n="about_p1">{T['fr']['about_p1']}</p>
+      <p data-i18n="about_p2">{T['fr']['about_p2']}</p>
+      <div class="exp">
+        <h3 data-i18n="exp_t">{T['fr']['exp_t']}</h3>
+        <p style="margin:0" data-i18n="exp_d">{T['fr']['exp_d']}</p>
+      </div>
+      <div class="cvbox">
+        <!-- Remplacer REMPLACER_PAR_URL_MON_CV par l'URL de la page « Mon CV » protégée par mot de passe dans Jimdo -->
+        <a class="btn btn-lock" href="{CV_URL}"><span data-i18n="btn_cv">{T['fr']['btn_cv']}</span></a>
+        <small data-i18n="cv_note">{T['fr']['cv_note']}</small>
+      </div>
+    </div>
+  </div>
+</section>
+</main>"""
+
+BODY["works.html"] = f"""
+<main>
+<section class="wrap">
+  <div class="head reveal">
+    <span class="eyebrow">Portfolio</span>
+    <h2 data-i18n="works_t">{T['fr']['works_t']}</h2>
+    <p class="sub" data-i18n="works_sub">{T['fr']['works_sub']}</p>
+  </div>
+  <div class="grid">
+    <div class="card reveal">{icob('fa-instagram')}<h3 data-i18n="w1_t">{T['fr']['w1_t']}</h3><p data-i18n="w1_d">{T['fr']['w1_d']}</p>
+      <a class="btn btn-ghost" href="{INSTAGRAM}" target="_blank" rel="noopener"><span data-i18n="btn_insta">{T['fr']['btn_insta']}</span></a></div>
+    <div class="card reveal">{ico('fa-globe')}<h3 data-i18n="w2_t">{T['fr']['w2_t']}</h3><p data-i18n="w2_d">{T['fr']['w2_d']}</p></div>
+    <div class="card reveal">{ico('fa-robot')}<h3 data-i18n="w3_t">{T['fr']['w3_t']}</h3><p data-i18n="w3_d">{T['fr']['w3_d']}</p></div>
+  </div>
+</section>
+</main>"""
+
+BODY["skills.html"] = f"""
+<main>
+<section class="alt">
+  <div class="wrap">
+    <div class="head reveal">
+      <span class="eyebrow">Services</span>
+      <h2 data-i18n="skills_t">{T['fr']['skills_t']}</h2>
+      <p class="sub" data-i18n="skills_sub">{T['fr']['skills_sub']}</p>
+    </div>
+    <div class="grid">
+      {card('fa-bullhorn', 's1')}
+      {card('fa-code', 's2')}
+      {card('fa-gears', 's3')}
+      {card('fa-camera', 's4')}
+      {card('fa-mobile-screen-button', 's5')}
+    </div>
+  </div>
+</section>
+</main>"""
+
+BODY["contact.html"] = f"""
+<main>
+<section class="wrap">
+  <div class="head reveal">
+    <span class="eyebrow">Contact</span>
+    <h2 data-i18n="contact_t">{T['fr']['contact_t']}</h2>
+    <p class="sub" data-i18n="contact_sub">{T['fr']['contact_sub']}</p>
+  </div>
+  <form class="form reveal" id="contactForm">
+    <input name="name" required placeholder="Votre nom" data-i18n-ph="f_name">
+    <input name="email" type="email" required placeholder="Votre e-mail" data-i18n-ph="f_email">
+    <textarea name="message" required placeholder="Votre message" data-i18n-ph="f_msg"></textarea>
+    <button class="btn btn-primary" type="submit" style="justify-self:center"><span data-i18n="f_send">{T['fr']['f_send']}</span> <i class="fa-solid fa-paper-plane"></i></button>
+  </form>
+  <div class="social reveal" style="margin-top:28px">
+    <a href="{INSTAGRAM}" target="_blank" rel="noopener" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
+    <a href="{LINKEDIN}" target="_blank" rel="noopener" title="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+    <a href="{FACEBOOK}" target="_blank" rel="noopener" title="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+    <a href="{YOUTUBE}" target="_blank" rel="noopener" title="YouTube"><i class="fa-brands fa-youtube"></i></a>
+    <a href="mailto:{EMAIL}" title="Email"><i class="fa-solid fa-envelope"></i></a>
+  </div>
+  <!-- Compteur de visiteurs (compteurdevisite.com) -->
+  <div class="counter reveal">
+    <p data-i18n="counter_label" style="margin-bottom:10px">{T['fr']['counter_label']}</p>
+    {COUNTER}
+  </div>
+</section>
+</main>"""
+
+DESCS = {
+    "index.html": "Karou Mosaab - Master 2 Marketing Digital, EHEC. Accueil.",
+    "about.html": "A propos de moi - Karou Mosaab, Master 2 Marketing Digital à l'EHEC.",
+    "works.html": "Mes travaux - photographie automobile, sites web, automatisation.",
+    "skills.html": "Mes compétences - marketing digital, web, automatisation, photo, smartphones.",
+    "contact.html": "Contact - Karou Mosaab.",
+}
+
+if __name__ == "__main__":
+    for href, label in PAGES:
+        html = page_shell(f"{label} | Karou Mosaab", DESCS[href], href, BODY[href])
+        with open(os.path.join(HERE, href), "w", encoding="utf-8") as f:
+            f.write(html)
+        print("écrit", href, len(html))
