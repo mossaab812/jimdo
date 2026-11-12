@@ -27,7 +27,6 @@ PAGE_FILE = {
     "about.html": "a-propos-de-moi.html",
     "works.html": "mes-travaux.html",
     "skills.html": "mes-competences.html",
-    "contact.html": "contact.html",
 }
 
 GOLD = "#C9A45C"
@@ -82,6 +81,24 @@ HOME_CSS = """
 .km-counter p{color:#C9A45C;letter-spacing:2.5px;text-transform:uppercase;font-size:.74rem;margin-bottom:12px}
 .km-home[dir=rtl] .km-title,.km-home[dir=rtl] .km-name,.km-home[dir=rtl] .km-card h3,.km-home[dir=rtl] .km-about h2,.km-home[dir=rtl] .km-track span{font-family:'Cairo',Georgia,serif;font-style:normal}
 .km-home[dir=rtl] .km-kicker{letter-spacing:0}
+.km-bigname{font-family:'Playfair Display',Georgia,serif;font-size:4.8rem;font-weight:400;color:#C9A45C;line-height:1.1;margin:10px 0 36px}
+.km-avatar{width:230px;height:230px;border-radius:50%;border:1px solid #C9A45C;padding:8px;margin:0 auto 34px;background:#0E0D0B;overflow:hidden}
+.km-avatar img{display:block!important;width:100%!important;height:100%!important;border-radius:50%;object-fit:cover;object-position:center 15%;max-width:none!important}
+.km-social-row{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin:0 0 36px}
+.km-social-row .km-o{position:static;transform:none}
+.km-mail{display:inline-block;color:#C9A45C;border-bottom:1px solid rgba(201,164,92,.4);padding-bottom:4px;letter-spacing:.5px}
+.km-contact{padding:60px 0 40px}
+.km-counter-global{max-width:460px;margin:50px auto 0;border:1px solid #C9A45C;background:#0E0D0B;padding:20px;text-align:center}
+.km-counter-global p{color:#C9A45C;letter-spacing:2.5px;text-transform:uppercase;font-size:.74rem;margin-bottom:10px}
+.km-cv{padding:60px 0 40px}
+.km-cv h1{font-family:'Playfair Display',Georgia,serif;font-size:2.8rem;font-weight:400;color:#F3EDE2;margin-bottom:6px}
+.km-cv .km-sub-cv{color:#C9A45C;letter-spacing:2px;text-transform:uppercase;font-size:.8rem;margin-bottom:30px}
+.km-cv section{background:#171512;border:1px solid rgba(201,164,92,.25);padding:26px 30px;margin-top:18px;text-align:left}
+.km-cv h2{font-family:'Playfair Display',Georgia,serif;font-size:1.4rem;font-weight:500;color:#C9A45C;margin-bottom:12px}
+.km-cv p,.km-cv li{color:#CFC8B8;font-size:.98rem;line-height:1.8}
+.km-cv ul{padding-left:20px;margin:0}
+.km-cv a{color:#C9A45C;border-bottom:1px solid rgba(201,164,92,.4)}
+.km-home[dir=rtl] .km-bigname,.km-home[dir=rtl] .km-cv h1,.km-home[dir=rtl] .km-cv h2{font-family:'Cairo',Georgia,serif;font-style:normal}
 @media (max-width:760px){
   .km-title{font-size:2.4rem}
   .km-name{font-size:1.6rem}
@@ -157,8 +174,7 @@ def build_home():
 
     <section class="km-hero">
       <p class="km-kicker" data-i18n="badge">{t['badge']}</p>
-      <h1 class="km-title" data-i18n="welcome">{t['welcome']}</h1>
-      <p class="km-name">Karou Mosaab</p>
+      <h1 class="km-bigname">Karou Mosaab</h1>
 
       <div class="km-orbit">
         <div class="km-ring"><img src="{photo}" alt="Karou Mosaab"></div>
@@ -171,7 +187,6 @@ def build_home():
       <p class="km-sub" data-i18n="sub">{t['sub']}</p>
       <div class="km-btns">
         <a class="km-btn km-btn-gold" href="/mes-travaux/" data-i18n="btn1">{t['btn1']}</a>
-        <a class="km-btn km-btn-line" href="/contact/" data-i18n="btn2">{t['btn2']}</a>
       </div>
     </section>
 
@@ -189,10 +204,6 @@ def build_home():
       <a class="km-btn km-btn-gold" href="/a-propos-de-moi/" data-i18n="dbtn">{t['dbtn']}</a>
     </div>
 
-    <div class="km-counter">
-      <p data-i18n="counter">{t['counter']}</p>
-      {build.COUNTER}
-    </div>
   </div>
 </div>
 {script}
@@ -253,12 +264,14 @@ html,body{background:#F5F2EA!important;margin:0!important;padding:0!important}
 #container a{color:inherit;text-decoration:none}
 #container img{max-width:100%;height:auto}
 #container .logo-dot{background:#C9A45C!important;color:#0E0D0B!important}
+#container .logo{font-family:'Playfair Display',Georgia,serif;font-style:italic;font-weight:400;font-size:1.2rem;color:#F3EDE2;white-space:nowrap}
 #navigation{max-width:1160px;margin:18px auto 0;padding:0 5%;text-align:center}
 #navigation ul{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;list-style:none;padding:0;margin:0}
 #navigation li{list-style:none;margin:0;padding:0}
 #navigation a{display:inline-block;padding:9px 16px;border-radius:999px;background:#fff;box-shadow:0 8px 20px rgba(28,24,18,.08);font-weight:700;font-size:.92rem;color:#1C1812;transition:background .25s}
 #navigation a:hover,#navigation a.current,#navigation a.active,#navigation li.current a,#navigation li.active a{background:#C9A45C}
-#content{max-width:1160px;margin:0 auto}
+#content{width:100%;max-width:1160px;margin:0 auto;float:none}
+#sidebar{display:none!important}
 .reveal{opacity:1!important;transform:none!important;transition:none!important}
 #footer{text-align:center;color:#6E6759;padding:30px 5% 30px;font-size:.9rem;margin-top:50px}
 #footer .social{margin-top:16px}
@@ -307,6 +320,67 @@ def jimdo_links(html):
     return html
 
 
+def build_contact():
+    photo = "data:image/jpeg;base64," + base64.b64encode(open(build.PHOTO, "rb").read()).decode()
+    return f"""<div class="km-home km-contact">
+  <div class="km-inner">
+    <div class="km-avatar"><img src="{photo}" alt="Karou Mosaab"></div>
+    <div class="km-social-row">
+      <a class="km-o" href="{build.INSTAGRAM}" target="_blank" rel="noopener" title="Instagram"><i class="fa-brands fa-instagram">&#xf16d;</i></a>
+      <a class="km-o" href="{build.FACEBOOK}" target="_blank" rel="noopener" title="Facebook"><i class="fa-brands fa-facebook-f">&#xf39e;</i></a>
+      <a class="km-o" href="{build.LINKEDIN}" target="_blank" rel="noopener" title="LinkedIn"><i class="fa-brands fa-linkedin-in">&#xf0e1;</i></a>
+      <a class="km-o" href="{build.YOUTUBE}" target="_blank" rel="noopener" title="YouTube"><i class="fa-brands fa-youtube">&#xf167;</i></a>
+    </div>
+    <a class="km-btn km-btn-gold" href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to={build.EMAIL}" target="_blank" rel="noopener">Écrire sur Gmail</a>
+    <p style="margin-top:22px"><a class="km-mail" href="mailto:{build.EMAIL}">{build.EMAIL}</a></p>
+  </div>
+</div>
+"""
+
+
+def build_cv():
+    return """<div class="km-home km-cv">
+  <div class="km-inner">
+    <h1>Karou Mosaab</h1>
+    <p class="km-sub-cv">Master 2 Marketing Digital · EHEC</p>
+
+    <section>
+      <h2>Profil</h2>
+      <p>Étudiant en Master 2 Marketing Digital à l'EHEC. Intérêt pour le marketing digital, le développement web, l'automatisation et la photographie automobile.</p>
+    </section>
+
+    <section>
+      <h2>Formation</h2>
+      <ul><li>Master 2 Marketing Digital : EHEC</li></ul>
+    </section>
+
+    <section>
+      <h2>Vie associative</h2>
+      <ul><li>HUC Alumni : membre du département RH &amp; Communication (Company Discovery)</li></ul>
+    </section>
+
+    <section>
+      <h2>Compétences</h2>
+      <ul>
+        <li>Marketing digital et stratégie de contenu</li>
+        <li>Développement web (HTML, CSS, JavaScript)</li>
+        <li>Automatisation des tâches</li>
+        <li>Photographie et retouche automobile</li>
+        <li>Initiation à la maintenance des smartphones</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Contact</h2>
+      <p>E-mail : <a href="mailto:%s">%s</a></p>
+      <p>Instagram : <a href="%s" target="_blank" rel="noopener">mk.venatus</a></p>
+      <p>LinkedIn : <a href="%s" target="_blank" rel="noopener">Mosaab Karou</a></p>
+    </section>
+  </div>
+</div>
+""" % (build.EMAIL, build.EMAIL, build.INSTAGRAM, build.LINKEDIN)
+
+
 def main():
     with open(os.path.join(HERE, "style.css"), "w", encoding="utf-8") as f:
         f.write(build_css())
@@ -316,7 +390,7 @@ def main():
   <div id="header">
     <div class="topbar">
       <nav class="navbar">
-        <a class="logo" href="/"><span class="logo-dot">K</span>Karou.</a>
+        <a class="logo" href="/">Bienvenue sur mon portfolio</a>
         <div class="navright">
           <a class="cta-nav" href="/contact/">Me contacter</a>
         </div>
@@ -327,8 +401,6 @@ def main():
   <div id="navigation">
     <var>navigation[1|2|3]</var>
   </div>
-
-  <div id="sidebar"><var>sidebar</var></div>
 
   <div id="content">
     <var>content</var>
@@ -343,6 +415,10 @@ def main():
       <a href="{build.YOUTUBE}" target="_blank" rel="noopener" title="YouTube"><i class="fa-brands fa-youtube">&#xf167;</i></a>
     </div>
     <p>&copy; 2026 Karou Mosaab</p>
+    <div class="km-counter-global">
+      <p>Compteur de visiteurs</p>
+      {build.COUNTER}
+    </div>
   </div>
 
 </div>
@@ -353,6 +429,10 @@ def main():
     os.makedirs(os.path.join(HERE, "pages"), exist_ok=True)
     with open(os.path.join(HERE, "pages", "accueil.html"), "w", encoding="utf-8") as f:
         f.write(nbsp_icons(build_home()))
+    with open(os.path.join(HERE, "pages", "contact.html"), "w", encoding="utf-8") as f:
+        f.write(nbsp_icons(build_contact()))
+    with open(os.path.join(HERE, "pages", "mon-cv.html"), "w", encoding="utf-8") as f:
+        f.write(build_cv())
     for src, fname in PAGE_FILE.items():
         body = nbsp_icons(build.fix_icons(jimdo_links(build.BODY[src])))
         with open(os.path.join(HERE, "pages", fname), "w", encoding="utf-8") as f:
