@@ -43,18 +43,22 @@
 <script>
 (function(){
   var DICT = {"fr": {"welcome": "Bienvenue sur mon portfolio", "badge": "Master 2 Marketing Digital · EHEC", "sub": "Étudiant en Master 2 Marketing Digital, je combine stratégie marketing, développement web, automatisation et photographie automobile.", "btn1": "Voir mes travaux", "btn2": "Me contacter", "marquee": "Marketing digital ✦ Développement web ✦ Automatisation ✦ Photographie automobile ✦ ", "c1t": "Marketing digital", "c1d": "Stratégie de contenu et présence en ligne.", "c2t": "Développement web", "c2d": "Sites simples, rapides et adaptés au mobile.", "c3t": "Automatisation", "c3d": "Automatiser les tâches répétitives pour gagner du temps.", "dt": "Qui est <em>Karou</em> ?", "dp": "Étudiant à l'EHEC, membre du département RH & Communication de HUC Alumni (Company Discovery). Passionné par le web, les réseaux sociaux et la photographie automobile.", "dbtn": "En savoir plus", "counter": "Compteur de visiteurs"}, "ar": {"welcome": "مرحباً بكم في البورتفوليو تاعي", "badge": "ماستر 2 تسويق رقمي · EHEC", "sub": "طالب ماستر 2 تسويق رقمي، أجمع بين الاستراتيجية التسويقية وتطوير الويب والأتمتة وتصوير السيارات.", "btn1": "شوف أعمالي", "btn2": "اتصل بي", "marquee": "التسويق الرقمي ✦ تطوير الويب ✦ الأتمتة ✦ تصوير السيارات ✦ ", "c1t": "التسويق الرقمي", "c1d": "استراتيجية المحتوى وحضور قوي على الإنترنت.", "c2t": "تطوير الويب", "c2d": "مواقع بسيطة وسريعة ومتجاوبة مع الهاتف.", "c3t": "الأتمتة", "c3d": "أتمتة المهام المتكررة باش توفر الوقت.", "dt": "من هو <em>كارو</em>؟", "dp": "طالب في EHEC، عضو قسم الموارد البشرية والاتصال في نادي HUC Alumni (Company Discovery). شغوف بالويب ومواقع التواصل وتصوير السيارات.", "dbtn": "تعرف عليا أكثر", "counter": "عداد الزوار"}, "en": {"welcome": "Welcome to my portfolio", "badge": "Master 2 Digital Marketing · EHEC", "sub": "Master 2 Digital Marketing student, I combine marketing strategy, web development, automation and car photography.", "btn1": "See my work", "btn2": "Contact me", "marquee": "Digital marketing ✦ Web development ✦ Automation ✦ Car photography ✦ ", "c1t": "Digital marketing", "c1d": "Content strategy and online presence.", "c2t": "Web development", "c2d": "Simple, fast, mobile-friendly websites.", "c3t": "Automation", "c3d": "Automating repetitive tasks to save time.", "dt": "Who is <em>Karou</em>?", "dp": "EHEC student, member of the HR & Communication department at HUC Alumni (Company Discovery). Passionate about web, social media and car photography.", "dbtn": "Learn more", "counter": "Visitor counter"}};
-  var root = document.querySelector('.km-home');
+  var root = document.currentScript && document.currentScript.previousElementSibling;
   if (!root) return;
   function setLang(l){
     var d = DICT[l]; if (!d) return;
     root.setAttribute('dir', l === 'ar' ? 'rtl' : 'ltr');
     root.querySelectorAll('[data-i18n]').forEach(function(el){
-      var k = el.getAttribute('data-i18n'); if (d[k] !== undefined) el.innerHTML = d[k];
+      var k = el.getAttribute('data-i18n'); if (d[k] !== undefined) el.textContent = d[k];
     });
     root.querySelectorAll('.km-lang button').forEach(function(b){ b.classList.toggle('on', b.dataset.lang === l); });
+    try { localStorage.setItem('km_lang', l); } catch(e){}
+    document.dispatchEvent(new CustomEvent('km-lang', {detail: l}));
   }
   root.querySelectorAll('.km-lang button').forEach(function(b){
     b.addEventListener('click', function(){ setLang(b.dataset.lang); });
   });
+  var saved = null; try { saved = localStorage.getItem('km_lang'); } catch(e){}
+  if (saved && DICT[saved]) setLang(saved);
 })();
 </script>

@@ -259,6 +259,8 @@ html,body{background:#F5F2EA!important;margin:0!important;padding:0!important}
 .km-about p{color:#A39B8B;line-height:1.9;margin-bottom:30px}
 .km-counter{max-width:460px;margin:56px auto 0;border:1px solid rgba(201,164,92,.3);padding:24px;text-align:center}
 .km-counter p{color:#C9A45C;letter-spacing:2.5px;text-transform:uppercase;font-size:.74rem;margin-bottom:12px}
+.km-page .km-lang button{color:#1C1812;border-color:#1C1812}
+.km-page .km-lang button.on,.km-page .km-lang button:hover{background:#1C1812;color:#fff}
 .km-home[dir=rtl] .km-title,.km-home[dir=rtl] .km-name,.km-home[dir=rtl] .km-card h3,.km-home[dir=rtl] .km-about h2,.km-home[dir=rtl] .km-track span{font-family:'Cairo',Georgia,serif;font-style:normal}
 .km-home[dir=rtl] .km-kicker{letter-spacing:0}
 .km-bigname{font-family:'Playfair Display',Georgia,serif;font-size:4.8rem;font-weight:400;color:#C9A45C;line-height:1.1;margin:10px 0 36px}

@@ -44,3 +44,31 @@
   </div>
 
 </div>
+
+<script>
+(function(){
+  /* Traduction de la barre du haut et du menu Jimdo (suit le choix FR / AR / EN des pages) */
+  var NAV = {
+    'accueil': {ar: 'الرئيسية', en: 'Home'},
+    'a propos de moi': {ar: 'من أنا', en: 'About me'},
+    'mes travaux': {ar: 'أعمالي', en: 'My work'},
+    'mes competences': {ar: 'مهاراتي', en: 'My skills'},
+    'contact': {ar: 'اتصل بي', en: 'Contact'},
+    'me contacter': {ar: 'راسلني', en: 'Contact me'},
+    'bienvenue sur mon portfolio': {ar: 'مرحباً بكم في موقعي', en: 'Welcome to my portfolio'}
+  };
+  function norm(s){ return s.normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/\s+/g,' ').trim().toLowerCase(); }
+  function apply(l){
+    document.querySelectorAll('#navigation a, #container .navbar a').forEach(function(a){
+      if (a.dataset.fr === undefined) a.dataset.fr = a.textContent;
+      var t = NAV[norm(a.dataset.fr)];
+      a.textContent = (l !== 'fr' && t && t[l]) ? t[l] : a.dataset.fr;
+    });
+    var root = document.getElementById('container');
+    if (root) root.setAttribute('dir', l === 'ar' ? 'rtl' : 'ltr');
+  }
+  document.addEventListener('km-lang', function(e){ apply(e.detail); });
+  var saved = null; try { saved = localStorage.getItem('km_lang'); } catch(e){}
+  if (saved) apply(saved);
+})();
+</script>

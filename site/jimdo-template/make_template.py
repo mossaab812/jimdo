@@ -79,6 +79,8 @@ HOME_CSS = """
 .km-about p{color:#A39B8B;line-height:1.9;margin-bottom:30px}
 .km-counter{max-width:460px;margin:56px auto 0;border:1px solid rgba(201,164,92,.3);padding:24px;text-align:center}
 .km-counter p{color:#C9A45C;letter-spacing:2.5px;text-transform:uppercase;font-size:.74rem;margin-bottom:12px}
+.km-page .km-lang button{color:#1C1812;border-color:#1C1812}
+.km-page .km-lang button.on,.km-page .km-lang button:hover{background:#1C1812;color:#fff}
 .km-home[dir=rtl] .km-title,.km-home[dir=rtl] .km-name,.km-home[dir=rtl] .km-card h3,.km-home[dir=rtl] .km-about h2,.km-home[dir=rtl] .km-track span{font-family:'Cairo',Georgia,serif;font-style:normal}
 .km-home[dir=rtl] .km-kicker{letter-spacing:0}
 .km-bigname{font-family:'Playfair Display',Georgia,serif;font-size:4.8rem;font-weight:400;color:#C9A45C;line-height:1.1;margin:10px 0 36px}
@@ -140,30 +142,39 @@ HOME_T = {
            "dbtn": "Learn more", "counter": "Visitor counter"},
 }
 
-HOME_SCRIPT = """<script>
+LANG_SCRIPT = """<script>
 (function(){
   var DICT = __DICT__;
-  var root = document.querySelector('.km-home');
+  var root = document.currentScript && document.currentScript.previousElementSibling;
   if (!root) return;
   function setLang(l){
     var d = DICT[l]; if (!d) return;
     root.setAttribute('dir', l === 'ar' ? 'rtl' : 'ltr');
     root.querySelectorAll('[data-i18n]').forEach(function(el){
-      var k = el.getAttribute('data-i18n'); if (d[k] !== undefined) el.innerHTML = d[k];
+      var k = el.getAttribute('data-i18n'); if (d[k] !== undefined) el.textContent = d[k];
     });
     root.querySelectorAll('.km-lang button').forEach(function(b){ b.classList.toggle('on', b.dataset.lang === l); });
+    try { localStorage.setItem('km_lang', l); } catch(e){}
+    document.dispatchEvent(new CustomEvent('km-lang', {detail: l}));
   }
   root.querySelectorAll('.km-lang button').forEach(function(b){
     b.addEventListener('click', function(){ setLang(b.dataset.lang); });
   });
+  var saved = null; try { saved = localStorage.getItem('km_lang'); } catch(e){}
+  if (saved && DICT[saved]) setLang(saved);
 })();
 </script>"""
+
+LANG_BAR = ('<div class="km-lang">'
+            '<button data-lang="fr" class="on">FR</button>'
+            '<button data-lang="ar">عربي</button>'
+            '<button data-lang="en">EN</button></div>')
 
 
 def build_home():
     photo = "data:image/jpeg;base64," + base64.b64encode(open(build.PHOTO, "rb").read()).decode()
     t = HOME_T["fr"]
-    script = HOME_SCRIPT.replace("__DICT__", json.dumps(HOME_T, ensure_ascii=False))
+    script = LANG_SCRIPT.replace("__DICT__", json.dumps(HOME_T, ensure_ascii=False))
     return f"""<div class="km-home">
   <div class="km-inner">
     <div class="km-lang">
@@ -317,10 +328,50 @@ def jimdo_links(html):
     return html
 
 
+EMBED_T = {
+  "fr": {"c_title": "Me contacter", "c_gmail": "Écrire sur Gmail", "c_or": "ou par e-mail", "cv_title": "Karou Mosaab",
+    "cv_sub": "Master 2 Marketing Digital · EHEC", "cv_h1": "Profil",
+    "cv_p1": "Étudiant en Master 2 Marketing Digital à l'EHEC. Intérêt pour le marketing digital, le développement web, l'automatisation et la photographie automobile.",
+    "cv_h2": "Formation", "cv_f1": "Master 2 Marketing Digital : EHEC",
+    "cv_h3": "Vie associative", "cv_a1": "HUC Alumni : membre du département RH & Communication (Company Discovery)",
+    "cv_h4": "Compétences", "cv_s1": "Marketing digital et stratégie de contenu", "cv_s2": "Développement web (HTML, CSS, JavaScript)",
+    "cv_s3": "Automatisation des tâches", "cv_s4": "Photographie et retouche automobile", "cv_s5": "Initiation à la maintenance des smartphones",
+    "cv_h5": "Contact", "cv_email_l": "E-mail :", "cv_insta_l": "Instagram :", "cv_li_l": "LinkedIn :"},
+  "en": {"c_title": "Contact me", "c_gmail": "Write on Gmail", "c_or": "or by e-mail", "cv_title": "Karou Mosaab",
+    "cv_sub": "Master 2 Digital Marketing · EHEC", "cv_h1": "Profile",
+    "cv_p1": "Master 2 Digital Marketing student at EHEC. Interested in digital marketing, web development, automation and car photography.",
+    "cv_h2": "Education", "cv_f1": "Master 2 Digital Marketing: EHEC",
+    "cv_h3": "Student involvement", "cv_a1": "HUC Alumni: member of the HR & Communication department (Company Discovery)",
+    "cv_h4": "Skills", "cv_s1": "Digital marketing and content strategy", "cv_s2": "Web development (HTML, CSS, JavaScript)",
+    "cv_s3": "Task automation", "cv_s4": "Car photography and editing", "cv_s5": "Introduction to smartphone repair",
+    "cv_h5": "Contact", "cv_email_l": "E-mail:", "cv_insta_l": "Instagram:", "cv_li_l": "LinkedIn:"},
+  "ar": {"c_title": "راسلني", "c_gmail": "راسلني عبر Gmail", "c_or": "أو عبر البريد الإلكتروني", "cv_title": "كارو مصعب",
+    "cv_sub": "ماستر 2 تسويق رقمي · EHEC", "cv_h1": "الملف الشخصي",
+    "cv_p1": "طالب ماستر 2 تسويق رقمي في EHEC. مهتم بالتسويق الرقمي وتطوير المواقع والأتمتة وتصوير السيارات.",
+    "cv_h2": "التكوين", "cv_f1": "ماستر 2 تسويق رقمي: EHEC",
+    "cv_h3": "الحياة الجمعوية", "cv_a1": "HUC Alumni: عضو في قسم الموارد البشرية والتواصل (Company Discovery)",
+    "cv_h4": "المهارات", "cv_s1": "التسويق الرقمي واستراتيجية المحتوى", "cv_s2": "تطوير المواقع (HTML، CSS، JavaScript)",
+    "cv_s3": "أتمتة المهام", "cv_s4": "تصوير السيارات وتعديل الصور", "cv_s5": "مبادئ صيانة الهواتف الذكية",
+    "cv_h5": "التواصل", "cv_email_l": "البريد:", "cv_insta_l": "إنستغرام:", "cv_li_l": "لينكدإن:"},
+}
+
+
+def ti(key, tag="span", extra=""):
+    """Élément traduisible : texte FR par défaut, traduit par le script de langue."""
+    return f'<{tag} data-i18n="{key}"{extra}>{EMBED_T["fr"][key]}</{tag}>'
+
+
+def page_dict():
+    """Dictionnaire de langue commun : textes du site + textes contact / CV."""
+    return {l: {**build.T[l], **EMBED_T[l]} for l in ("fr", "ar", "en")}
+
+
 def build_contact():
     photo = "data:image/jpeg;base64," + base64.b64encode(open(build.PHOTO, "rb").read()).decode()
+    script = LANG_SCRIPT.replace("__DICT__", json.dumps(page_dict(), ensure_ascii=False))
     return f"""<div class="km-home km-contact">
   <div class="km-inner">
+    {LANG_BAR}
     <div class="km-avatar"><img src="{photo}" alt="Karou Mosaab"></div>
     <div class="km-social-row">
       <a class="km-o" href="{build.INSTAGRAM}" target="_blank" rel="noopener" title="Instagram"><i class="fa-brands fa-instagram">&#xf16d;</i></a>
@@ -328,54 +379,58 @@ def build_contact():
       <a class="km-o" href="{build.LINKEDIN}" target="_blank" rel="noopener" title="LinkedIn"><i class="fa-brands fa-linkedin-in">&#xf0e1;</i></a>
       <a class="km-o" href="{build.YOUTUBE}" target="_blank" rel="noopener" title="YouTube"><i class="fa-brands fa-youtube">&#xf167;</i></a>
     </div>
-    <a class="km-btn km-btn-gold" href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to={build.EMAIL}" target="_blank" rel="noopener">Écrire sur Gmail</a>
-    <p style="margin-top:22px"><a class="km-mail" href="mailto:{build.EMAIL}">{build.EMAIL}</a></p>
+    {ti("c_gmail", "a", ' class="km-btn km-btn-gold" href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=' + build.EMAIL + '" target="_blank" rel="noopener"')}
+    <p style="margin-top:22px"><span data-i18n="c_or">{EMBED_T["fr"]["c_or"]}</span> : <a class="km-mail" href="mailto:{build.EMAIL}">{build.EMAIL}</a></p>
   </div>
 </div>
+{script}
 """
 
 
 def build_cv():
-    return """<div class="km-home km-cv">
+    script = LANG_SCRIPT.replace("__DICT__", json.dumps(page_dict(), ensure_ascii=False))
+    return f"""<div class="km-home km-cv">
   <div class="km-inner">
-    <h1>Karou Mosaab</h1>
-    <p class="km-sub-cv">Master 2 Marketing Digital · EHEC</p>
+    {LANG_BAR}
+    {ti("cv_title", "h1")}
+    {ti("cv_sub", "p", ' class="km-sub-cv"')}
 
     <section>
-      <h2>Profil</h2>
-      <p>Étudiant en Master 2 Marketing Digital à l'EHEC. Intérêt pour le marketing digital, le développement web, l'automatisation et la photographie automobile.</p>
+      {ti("cv_h1", "h2")}
+      {ti("cv_p1", "p")}
     </section>
 
     <section>
-      <h2>Formation</h2>
-      <ul><li>Master 2 Marketing Digital : EHEC</li></ul>
+      {ti("cv_h2", "h2")}
+      <ul><li>{ti("cv_f1")}</li></ul>
     </section>
 
     <section>
-      <h2>Vie associative</h2>
-      <ul><li>HUC Alumni : membre du département RH &amp; Communication (Company Discovery)</li></ul>
+      {ti("cv_h3", "h2")}
+      <ul><li>{ti("cv_a1")}</li></ul>
     </section>
 
     <section>
-      <h2>Compétences</h2>
+      {ti("cv_h4", "h2")}
       <ul>
-        <li>Marketing digital et stratégie de contenu</li>
-        <li>Développement web (HTML, CSS, JavaScript)</li>
-        <li>Automatisation des tâches</li>
-        <li>Photographie et retouche automobile</li>
-        <li>Initiation à la maintenance des smartphones</li>
+        <li>{ti("cv_s1")}</li>
+        <li>{ti("cv_s2")}</li>
+        <li>{ti("cv_s3")}</li>
+        <li>{ti("cv_s4")}</li>
+        <li>{ti("cv_s5")}</li>
       </ul>
     </section>
 
     <section>
-      <h2>Contact</h2>
-      <p>E-mail : <a href="mailto:%s">%s</a></p>
-      <p>Instagram : <a href="%s" target="_blank" rel="noopener">mk.venatus</a></p>
-      <p>LinkedIn : <a href="%s" target="_blank" rel="noopener">Mosaab Karou</a></p>
+      {ti("cv_h5", "h2")}
+      <p>{ti("cv_email_l")} <a href="mailto:{build.EMAIL}">{build.EMAIL}</a></p>
+      <p>{ti("cv_insta_l")} <a href="{build.INSTAGRAM}" target="_blank" rel="noopener">mk.venatus</a></p>
+      <p>{ti("cv_li_l")} <a href="{build.LINKEDIN}" target="_blank" rel="noopener">Mosaab Karou</a></p>
     </section>
   </div>
 </div>
-""" % (build.EMAIL, build.EMAIL, build.INSTAGRAM, build.LINKEDIN)
+{script}
+"""
 
 
 LINKS = (
@@ -383,6 +438,35 @@ LINKS = (
     '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Playfair+Display:ital,wght@0,400;0,500;1,400&amp;display=swap">\n'
     '<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">\n'
 )
+
+
+NAV_SCRIPT = """<script>
+(function(){
+  /* Traduction de la barre du haut et du menu Jimdo (suit le choix FR / AR / EN des pages) */
+  var NAV = {
+    'accueil': {ar: 'الرئيسية', en: 'Home'},
+    'a propos de moi': {ar: 'من أنا', en: 'About me'},
+    'mes travaux': {ar: 'أعمالي', en: 'My work'},
+    'mes competences': {ar: 'مهاراتي', en: 'My skills'},
+    'contact': {ar: 'اتصل بي', en: 'Contact'},
+    'me contacter': {ar: 'راسلني', en: 'Contact me'},
+    'bienvenue sur mon portfolio': {ar: 'مرحباً بكم في موقعي', en: 'Welcome to my portfolio'}
+  };
+  function norm(s){ return s.normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/\s+/g,' ').trim().toLowerCase(); }
+  function apply(l){
+    document.querySelectorAll('#navigation a, #container .navbar a').forEach(function(a){
+      if (a.dataset.fr === undefined) a.dataset.fr = a.textContent;
+      var t = NAV[norm(a.dataset.fr)];
+      a.textContent = (l !== 'fr' && t && t[l]) ? t[l] : a.dataset.fr;
+    });
+    var root = document.getElementById('container');
+    if (root) root.setAttribute('dir', l === 'ar' ? 'rtl' : 'ltr');
+  }
+  document.addEventListener('km-lang', function(e){ apply(e.detail); });
+  var saved = null; try { saved = localStorage.getItem('km_lang'); } catch(e){}
+  if (saved) apply(saved);
+})();
+</script>"""
 
 
 def main():
@@ -432,7 +516,7 @@ def main():
 </div>
 """
     with open(os.path.join(HERE, "template.html"), "w", encoding="utf-8") as f:
-        f.write(nbsp_icons(template))
+        f.write(nbsp_icons(template) + "\n" + NAV_SCRIPT)
 
     os.makedirs(os.path.join(HERE, "pages"), exist_ok=True)
     with open(os.path.join(HERE, "pages", "accueil.html"), "w", encoding="utf-8") as f:
@@ -442,9 +526,11 @@ def main():
     with open(os.path.join(HERE, "pages", "mon-cv.html"), "w", encoding="utf-8") as f:
         f.write(build_cv())
     for src, fname in PAGE_FILE.items():
-        body = '<div class="km-page">\n' + nbsp_icons(build.fix_icons(jimdo_links(build.BODY[src]))) + '\n</div>'
+        lang_script = LANG_SCRIPT.replace("__DICT__", json.dumps(page_dict(), ensure_ascii=False))
+        body = ('<div class="km-page">\n' + LANG_BAR + "\n"
+                + nbsp_icons(build.fix_icons(jimdo_links(build.BODY[src]))) + '\n</div>')
         with open(os.path.join(HERE, "pages", fname), "w", encoding="utf-8") as f:
-            f.write(body + "\n" + PAGE_SCRIPT + "\n")
+            f.write(body + "\n" + lang_script + "\n" + PAGE_SCRIPT + "\n")
     import shutil
     dst = os.path.join(HERE, "a-coller")
     os.makedirs(dst, exist_ok=True)
