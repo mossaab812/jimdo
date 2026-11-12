@@ -410,6 +410,10 @@ def main():
     <var>content</var>
   </div>
 
+  <div id="sidebar">
+    <var>sidebar</var>
+  </div>
+
   <div id="footer">
     <div class="gutter"><var>footer</var></div>
     <div class="social">
