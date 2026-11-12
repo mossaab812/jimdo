@@ -37,7 +37,7 @@ HOME_CSS = """
 /* ===== Accueil : style premium noir & or ===== */
 .km-home{background:#0E0D0B;color:#F3EDE2;font-family:'Plus Jakarta Sans','Cairo',system-ui,sans-serif;line-height:1.7;width:100%;margin:0;padding:0 0 70px;overflow:hidden;text-align:center}
 .km-home *{box-sizing:border-box}
-.km-home a{color:inherit;text-decoration:none}
+.km-home a{text-decoration:none}\n.km-home a:not([class]){color:inherit}
 .km-home p{margin:0}
 .km-inner{max-width:1100px;margin:0 auto;padding:0 6%}
 .km-lang{display:flex;justify-content:flex-end;gap:8px;padding-top:26px}
@@ -211,6 +211,7 @@ def build_home():
 
 
 # ---------- CSS scopé sous #container ----------
+BARE_TAG = re.compile(r"^(\*|(h[1-6]|p|section|footer|img|a|button|ul|li|span|div|nav|html)(?![\w-]))")
 def scope_sel(sel):
     out = []
     for s in sel.split(","):
@@ -219,10 +220,11 @@ def scope_sel(sel):
             continue
         if s == ":root" or s in ("html", "body"):
             out.append("#container")
-        elif s == "*":
-            out.append("#container *")
         elif s.startswith("#container"):
             out.append(s)
+        elif BARE_TAG.match(s):
+            # Règles sur balises nues : limitées aux pages .km-page (jamais à l'accueil .km-home)
+            out.append("#container .km-page " + s)
         else:
             out.append("#container " + s)
     return ", ".join(out)
@@ -261,8 +263,6 @@ OVERRIDES = """
 html,body{background:#F5F2EA!important;margin:0!important;padding:0!important}
 #container{min-height:100vh;background:#F5F2EA;color:#1C1812}
 #container *{box-sizing:border-box}
-#container a{color:inherit;text-decoration:none}
-#container img{max-width:100%;height:auto}
 #container .logo-dot{background:#C9A45C!important;color:#0E0D0B!important}
 #container .logo{font-family:'Playfair Display',Georgia,serif;font-style:italic;font-weight:400;font-size:1.2rem;color:#F3EDE2;white-space:nowrap}
 #navigation{max-width:1160px;margin:18px auto 0;padding:0 5%;text-align:center}
@@ -434,10 +434,25 @@ def main():
     with open(os.path.join(HERE, "pages", "mon-cv.html"), "w", encoding="utf-8") as f:
         f.write(build_cv())
     for src, fname in PAGE_FILE.items():
-        body = nbsp_icons(build.fix_icons(jimdo_links(build.BODY[src])))
+        body = '<div class="km-page">\n' + nbsp_icons(build.fix_icons(jimdo_links(build.BODY[src]))) + '\n</div>'
         with open(os.path.join(HERE, "pages", fname), "w", encoding="utf-8") as f:
             f.write(body + "\n" + PAGE_SCRIPT + "\n")
-    print("OK : style.css, template.html, pages/*.html")
+    import shutil
+    dst = os.path.join(HERE, "a-coller")
+    os.makedirs(dst, exist_ok=True)
+    for name, src in [
+        ("1-template.html", "template.html"),
+        ("2-style.css", "style.css"),
+        ("3-accueil.html", "pages/accueil.html"),
+        ("4-a-propos-de-moi.html", "pages/a-propos-de-moi.html"),
+        ("5-mes-travaux.html", "pages/mes-travaux.html"),
+        ("6-mes-competences.html", "pages/mes-competences.html"),
+        ("7-contact.html", "pages/contact.html"),
+        ("8-mon-cv.html", "pages/mon-cv.html"),
+    ]:
+        shutil.copyfile(os.path.join(HERE, src), os.path.join(dst, name))
+    shutil.copyfile(os.path.join(HERE, "karou.jpg"), os.path.join(dst, "karou.jpg"))
+    print("OK : style.css, template.html, pages/*.html, a-coller/")
 
 
 if __name__ == "__main__":

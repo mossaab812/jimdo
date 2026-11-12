@@ -1,0 +1,86 @@
+<div class="km-page">
+
+<main>
+<section style="padding-top:80px">
+  <div class="wrap">
+    <div class="svc-head-wrap reveal">
+      <div>
+        <span data-i18n="svc_eyebrow" class="eyebrow">Mes services</span>
+        <h2><span data-i18n="skills_a">Mes</span> <span class="hl"><span data-i18n="skills_b">compétences</span></span></h2>
+        <p style="margin:0;max-width:560px"><span data-i18n="skills_sub">Les services et compétences que je développe, cliquez sur une ligne pour voir le détail.</span></p>
+      </div>
+    </div>
+    <div class="reveal"><div class="svc-list"><div class="svc" tabindex="0" role="button" aria-expanded="false">
+        <div class="svc-head">
+          <span class="num">01.</span>
+          <h3 data-i18n="s1_t">Marketing digital</h3>
+          <span class="go-sm"><i class="fa-solid fa-arrow-up-right">&nbsp;</i></span>
+        </div>
+        <div class="svc-body">
+          <p data-i18n="s1_d">Stratégie de contenu, réseaux sociaux et analyse de la présence en ligne.</p>
+          <div class="chips"><span data-i18n="s1_tag1">Stratégie de contenu</span><span data-i18n="s1_tag2">Réseaux sociaux</span><span data-i18n="s1_tag3">Analyse</span></div>
+        </div>
+      </div><div class="svc open" tabindex="0" role="button" aria-expanded="true">
+        <div class="svc-head">
+          <span class="num">02.</span>
+          <h3 data-i18n="s2_t">Développement web</h3>
+          <span class="go-sm"><i class="fa-solid fa-arrow-up-right">&nbsp;</i></span>
+        </div>
+        <div class="svc-body">
+          <p data-i18n="s2_d">Création de pages web rapides et adaptées au mobile avec HTML, CSS et JavaScript.</p>
+          <div class="chips"><span data-i18n="s2_tag1">HTML / CSS</span><span data-i18n="s2_tag2">JavaScript</span><span data-i18n="s2_tag3">Responsive</span></div>
+        </div>
+      </div><div class="svc" tabindex="0" role="button" aria-expanded="false">
+        <div class="svc-head">
+          <span class="num">03.</span>
+          <h3 data-i18n="s3_t">Automatisation</h3>
+          <span class="go-sm"><i class="fa-solid fa-arrow-up-right">&nbsp;</i></span>
+        </div>
+        <div class="svc-body">
+          <p data-i18n="s3_d">Automatiser les tâches répétitives pour gagner du temps et réduire les erreurs.</p>
+          <div class="chips"><span data-i18n="s3_tag1">Workflows</span><span data-i18n="s3_tag2">Tâches répétitives</span><span data-i18n="s3_tag3">Scripts</span></div>
+        </div>
+      </div><div class="svc" tabindex="0" role="button" aria-expanded="false">
+        <div class="svc-head">
+          <span class="num">04.</span>
+          <h3 data-i18n="s4_t">Photographie automobile</h3>
+          <span class="go-sm"><i class="fa-solid fa-arrow-up-right">&nbsp;</i></span>
+        </div>
+        <div class="svc-body">
+          <p data-i18n="s4_d">Prise de vue créative et retouche de véhicules, publiées sur Instagram.</p>
+          <div class="chips"><span data-i18n="s4_tag1">Prise de vue</span><span data-i18n="s4_tag2">Retouche</span><span data-i18n="s4_tag3">Instagram</span></div>
+        </div>
+      </div><div class="svc" tabindex="0" role="button" aria-expanded="false">
+        <div class="svc-head">
+          <span class="num">05.</span>
+          <h3 data-i18n="s5_t">Maintenance smartphones</h3>
+          <span class="go-sm"><i class="fa-solid fa-arrow-up-right">&nbsp;</i></span>
+        </div>
+        <div class="svc-body">
+          <p data-i18n="s5_d">Initiation au diagnostic et à la réparation des smartphones.</p>
+          <div class="chips"><span data-i18n="s5_tag1">Diagnostic</span><span data-i18n="s5_tag2">Initiation</span><span data-i18n="s5_tag3">Entretien</span></div>
+        </div>
+      </div></div></div>
+  </div>
+</section>
+</main>
+</div>
+<script>
+(function(){
+  document.querySelectorAll('.svc').forEach(function(item){
+    function toggle(){
+      var open = item.classList.contains('open');
+      document.querySelectorAll('.svc.open').forEach(function(o){ o.classList.remove('open'); });
+      if (!open) item.classList.add('open');
+    }
+    item.addEventListener('click', toggle);
+  });
+  var form = document.getElementById('contactForm');
+  if (form) form.addEventListener('submit', function(ev){
+    ev.preventDefault();
+    var n = form.name.value, m = form.email.value, t = form.message.value;
+    var body = 'Nom: ' + n + '\nE-mail: ' + m + '\n\n' + t;
+    window.location.href = 'mailto:mossaabmanant19@gmail.com?subject=' + encodeURIComponent('Contact via portfolio - ' + n) + '&body=' + encodeURIComponent(body);
+  });
+})();
+</script>

@@ -1,0 +1,59 @@
+<div class="km-page">
+
+<main>
+<section style="padding-top:80px">
+  <div class="wrap">
+    <div class="head reveal">
+      <span data-i18n="works_a" class="eyebrow">Mes</span>
+      <h2><span data-i18n="works_a">Mes</span> <span class="hl"><span data-i18n="works_b">travaux</span></span></h2>
+      <p><p data-i18n="works_sub">Quelques réalisations et domaines dans lesquels je travaille.</p></p>
+    </div>
+    <div class="grid">
+      <div class="card reveal">
+        <div class="ico"><i class="fa-brands fa-instagram">&nbsp;</i></div>
+        <h3 data-i18n="w1_t">Photographie automobile</h3>
+        <p data-i18n="w1_d">Prises de vue et retouche de véhicules, publiées sur Instagram.</p>
+        <a class="btn btn-amber" href="https://www.instagram.com/mk.venatus/" target="_blank" rel="noopener"><span data-i18n="btn_insta">Voir la galerie sur Instagram</span><span class="arr"><i class="fa-solid fa-arrow-up-right">&nbsp;</i></span></a>
+      </div>
+      <div class="card reveal">
+        <div class="ico"><i class="fa-solid fa-globe">&nbsp;</i></div>
+        <h3 data-i18n="w2_t">Sites web</h3>
+        <p data-i18n="w2_d">Pages web simples, rapides et adaptées au mobile.</p>
+      </div>
+      <div class="card reveal">
+        <div class="ico"><i class="fa-solid fa-robot">&nbsp;</i></div>
+        <h3 data-i18n="w3_t">Automatisation</h3>
+        <p data-i18n="w3_d">Scripts et workflows qui simplifient les tâches répétitives.</p>
+      </div>
+    </div>
+  </div>
+</section>
+<section>
+  <div class="wrap">
+    <div class="cta reveal">
+      <h2><span data-i18n="cta_t">Un projet ou une question ?</span></h2>
+      <a class="btn btn-dark" href="/contact/"><span data-i18n="btn_contact">Me contacter</span><span class="arr"><i class="fa-solid fa-arrow-right">&nbsp;</i></span></a>
+    </div>
+  </div>
+</section>
+</main>
+</div>
+<script>
+(function(){
+  document.querySelectorAll('.svc').forEach(function(item){
+    function toggle(){
+      var open = item.classList.contains('open');
+      document.querySelectorAll('.svc.open').forEach(function(o){ o.classList.remove('open'); });
+      if (!open) item.classList.add('open');
+    }
+    item.addEventListener('click', toggle);
+  });
+  var form = document.getElementById('contactForm');
+  if (form) form.addEventListener('submit', function(ev){
+    ev.preventDefault();
+    var n = form.name.value, m = form.email.value, t = form.message.value;
+    var body = 'Nom: ' + n + '\nE-mail: ' + m + '\n\n' + t;
+    window.location.href = 'mailto:mossaabmanant19@gmail.com?subject=' + encodeURIComponent('Contact via portfolio - ' + n) + '&body=' + encodeURIComponent(body);
+  });
+})();
+</script>
