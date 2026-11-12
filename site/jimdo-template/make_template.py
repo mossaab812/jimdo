@@ -292,7 +292,11 @@ html,body{background:#F5F2EA!important;margin:0!important;padding:0!important}
 
 
 def build_css():
-    head = ""
+    # Imports ici aussi : la vue mobile de Jimdo n'utilise pas le <link> du template
+    head = (
+        "@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,500;1,400&display=swap');\n"
+        "@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css');\n"
+    )
     return head + scope_css(build.CSS) + OVERRIDES + HOME_CSS
 
 
