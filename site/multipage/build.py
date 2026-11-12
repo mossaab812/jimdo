@@ -19,7 +19,7 @@ YOUTUBE = "https://youtube.com/@kazunari812"
 CV_URL = "REMPLACER_PAR_URL_MON_CV"
 COUNTER = (
     '<div id="sfch4e1us4hpqpj9ym3sb2j3uf7bn8p5e3w"></div>\n'
-    '<script type="text/javascript" src="https://counter6.optistats.ovh/private/counter.js?c=h4e1us4hpqpj9ym3sb2j3uf7bn8p5e3w&down=async" async></script>\n'
+    '<script type="text/javascript" src="https://counter6.optistats.ovh/private/counter.js?c=h4e1us4hpqpj9ym3sb2j3uf7bn8p5e3w&amp;down=async" async></script>\n'
     '<noscript><a href="https://www.compteurdevisite.com" title="compteur internet"><img src="https://counter6.optistats.ovh/private/compteurdevisite.php?c=h4e1us4hpqpj9ym3sb2j3uf7bn8p5e3w" border="0" title="compteur internet" alt="compteur internet"></a></noscript>'
 )
 
