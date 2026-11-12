@@ -16,7 +16,7 @@ INSTAGRAM = "https://www.instagram.com/mk.venatus/"
 FACEBOOK = "https://www.facebook.com/share/18R3j19EPu/"
 LINKEDIN = "https://www.linkedin.com/in/mosaab~karou"
 YOUTUBE = "https://youtube.com/@kazunari812"
-CV_URL = "REMPLACER_PAR_URL_MON_CV"
+CV_URL = "/mon-cv/"
 COUNTER = (
     '<div id="sfce7kwy6cyq3315nrjk1du2kzwnga6r7ue"></div>\n'
     '<script type="text/javascript" src="https://counter6.optistats.ovh/private/counter.js?c=e7kwy6cyq3315nrjk1du2kzwnga6r7ue&amp;down=async" async></script>\n'
@@ -622,7 +622,7 @@ BODY["about.html"] = f"""
         <p data-i18n="exp_d">{T['fr']['exp_d']}</p>
       </div>
       <div class="about-actions">
-        <!-- Remplacer REMPLACER_PAR_URL_MON_CV par l'URL de la page « Mon CV » protégée par mot de passe dans Jimdo -->
+        <!-- Lien vers la page « Mon CV » (protégée par mot de passe), slug /mon-cv/ -->
         <a class="btn btn-amber" href="{CV_URL}">{tx('btn_cv')}<span class="arr"><i class="fa-solid fa-lock"></i></span></a>
         <span class="sign">Karou</span>
       </div>
