@@ -281,10 +281,7 @@ html,body{background:#F5F2EA!important;margin:0!important;padding:0!important}
 
 
 def build_css():
-    head = (
-        "@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,500;1,400&display=swap');\n"
-        "@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css');\n"
-    )
+    head = ""
     return head + scope_css(build.CSS) + OVERRIDES + HOME_CSS
 
 
@@ -381,11 +378,18 @@ def build_cv():
 """ % (build.EMAIL, build.EMAIL, build.INSTAGRAM, build.LINKEDIN)
 
 
+LINKS = (
+    '<link rel="preconnect" href="https://fonts.googleapis.com">\n'
+    '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,500;1,400&display=swap">\n'
+    '<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">\n'
+)
+
+
 def main():
     with open(os.path.join(HERE, "style.css"), "w", encoding="utf-8") as f:
         f.write(build_css())
 
-    template = f"""<div id="container">
+    template = LINKS + f"""<div id="container">
 
   <div id="header">
     <div class="topbar">
