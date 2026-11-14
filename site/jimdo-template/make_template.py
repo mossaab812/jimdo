@@ -340,7 +340,7 @@ EMBED_T = {
     "cv_h3": "Vie associative", "cv_a1": "HUC Alumni : membre du département RH & Communication (Company Discovery)",
     "cv_h4": "Compétences", "cv_s1": "Marketing digital et stratégie de contenu", "cv_s2": "Développement web (HTML, CSS, JavaScript)",
     "cv_s3": "Automatisation des tâches", "cv_s4": "Photographie et retouche automobile", "cv_s5": "Initiation à la maintenance des smartphones",
-    "cv_h5": "Contact", "cv_email_l": "E-mail :", "cv_insta_l": "Instagram :", "cv_li_l": "LinkedIn :"},
+    "cv_h5": "Contact", "cv_email_l": "E-mail :", "cv_insta_l": "Instagram :", "cv_li_l": "LinkedIn :", "cv_dl": "Télécharger le CV (PDF)"},
   "en": {"c_title": "Contact me", "c_gmail": "Write on Gmail", "c_or": "or by e-mail", "cv_title": "Karou Mosaab",
     "cv_sub": "Master 2 Digital Marketing · EHEC", "cv_h1": "Profile",
     "cv_p1": "Master 2 Digital Marketing student at EHEC. Interested in digital marketing, web development, automation and car photography.",
@@ -348,7 +348,7 @@ EMBED_T = {
     "cv_h3": "Student involvement", "cv_a1": "HUC Alumni: member of the HR & Communication department (Company Discovery)",
     "cv_h4": "Skills", "cv_s1": "Digital marketing and content strategy", "cv_s2": "Web development (HTML, CSS, JavaScript)",
     "cv_s3": "Task automation", "cv_s4": "Car photography and editing", "cv_s5": "Introduction to smartphone repair",
-    "cv_h5": "Contact", "cv_email_l": "E-mail:", "cv_insta_l": "Instagram:", "cv_li_l": "LinkedIn:"},
+    "cv_h5": "Contact", "cv_email_l": "E-mail:", "cv_insta_l": "Instagram:", "cv_li_l": "LinkedIn:", "cv_dl": "Download CV (PDF)"},
   "ar": {"c_title": "راسلني", "c_gmail": "راسلني عبر Gmail", "c_or": "أو عبر البريد الإلكتروني", "cv_title": "كارو مصعب",
     "cv_sub": "ماستر 2 تسويق رقمي · EHEC", "cv_h1": "الملف الشخصي",
     "cv_p1": "طالب ماستر 2 تسويق رقمي في EHEC. مهتم بالتسويق الرقمي وتطوير المواقع والأتمتة وتصوير السيارات.",
@@ -356,7 +356,7 @@ EMBED_T = {
     "cv_h3": "الحياة الجمعوية", "cv_a1": "HUC Alumni: عضو في قسم الموارد البشرية والتواصل (Company Discovery)",
     "cv_h4": "المهارات", "cv_s1": "التسويق الرقمي واستراتيجية المحتوى", "cv_s2": "تطوير المواقع (HTML، CSS، JavaScript)",
     "cv_s3": "أتمتة المهام", "cv_s4": "تصوير السيارات وتعديل الصور", "cv_s5": "مبادئ صيانة الهواتف الذكية",
-    "cv_h5": "التواصل", "cv_email_l": "البريد:", "cv_insta_l": "إنستغرام:", "cv_li_l": "لينكدإن:"},
+    "cv_h5": "التواصل", "cv_email_l": "البريد:", "cv_insta_l": "إنستغرام:", "cv_li_l": "لينكدإن:", "cv_dl": "تحميل السيرة الذاتية (PDF)"},
 }
 
 
@@ -389,6 +389,9 @@ def build_contact():
 </div>
 {script}
 """
+
+
+CV_PDF_URL = "https://github.com/mossaab812/jimdo/raw/arena/094ed348-jimdo/site/jimdo-template/cv/Mosaab_Karou_CV.pdf"
 
 
 def build_cv():
@@ -431,6 +434,10 @@ def build_cv():
       <p>{ti("cv_insta_l")} <a href="{build.INSTAGRAM}" target="_blank" rel="noopener">mk.venatus</a></p>
       <p>{ti("cv_li_l")} <a href="{build.LINKEDIN}" target="_blank" rel="noopener">Mosaab Karou</a></p>
     </section>
+
+    <div style="text-align:center;margin-top:26px">
+      <a class="km-btn km-btn-gold" href="{CV_PDF_URL}" target="_blank" rel="noopener" download>{ti("cv_dl")}</a>
+    </div>
   </div>
 </div>
 {script}
