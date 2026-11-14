@@ -401,6 +401,9 @@ def build_cv():
     {LANG_BAR}
     {ti("cv_title", "h1")}
     {ti("cv_sub", "p", ' class="km-sub-cv"')}
+    <div style="text-align:center;margin:18px 0 28px">
+      <a class="km-btn km-btn-gold" href="{CV_PDF_URL}" target="_blank" rel="noopener" download>{ti("cv_dl")}</a>
+    </div>
 
     <section>
       {ti("cv_h1", "h2")}
@@ -434,10 +437,6 @@ def build_cv():
       <p>{ti("cv_insta_l")} <a href="{build.INSTAGRAM}" target="_blank" rel="noopener">mk.venatus</a></p>
       <p>{ti("cv_li_l")} <a href="{build.LINKEDIN}" target="_blank" rel="noopener">Mosaab Karou</a></p>
     </section>
-
-    <div style="text-align:center;margin-top:26px">
-      <a class="km-btn km-btn-gold" href="{CV_PDF_URL}" target="_blank" rel="noopener" download>{ti("cv_dl")}</a>
-    </div>
   </div>
 </div>
 {script}
