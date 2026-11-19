@@ -151,7 +151,7 @@ LANG_SCRIPT = """<script>
     var d = DICT[l]; if (!d) return;
     root.setAttribute('dir', l === 'ar' ? 'rtl' : 'ltr');
     root.querySelectorAll('[data-i18n]').forEach(function(el){
-      var k = el.getAttribute('data-i18n'); if (d[k] !== undefined) el.textContent = d[k];
+      var k = el.getAttribute('data-i18n'); if (d[k] === undefined) return; if (/<[a-z]/i.test(d[k])) { el.innerHTML = d[k]; } else { el.textContent = d[k]; }
     });
     root.querySelectorAll('.km-lang button').forEach(function(b){ b.classList.toggle('on', b.dataset.lang === l); });
     try { localStorage.setItem('km_lang', l); } catch(e){}
@@ -489,7 +489,7 @@ ENGINE_TEMPLATE = """<script>
     var d = DICT[l]; if (!d) return;
     var dir = (l === 'ar') ? 'rtl' : 'ltr';
     document.querySelectorAll('[data-i18n]').forEach(function(el){
-      var k = el.getAttribute('data-i18n'); if (d[k] !== undefined) el.textContent = d[k];
+      var k = el.getAttribute('data-i18n'); if (d[k] === undefined) return; if (/<[a-z]/i.test(d[k])) { el.innerHTML = d[k]; } else { el.textContent = d[k]; }
     });
     document.querySelectorAll('.km-lang').forEach(function(bar){
       bar.querySelectorAll('button').forEach(function(b){ b.classList.toggle('on', b.getAttribute('data-lang') === l); });
@@ -509,7 +509,7 @@ ENGINE_TEMPLATE = """<script>
 
 
 def engine_script():
-    return ENGINE_TEMPLATE.replace("__DICT__", json.dumps(page_dict(), ensure_ascii=False))
+    return ENGINE_TEMPLATE.replace("__DICT__", json.dumps(page_dict(), ensure_ascii=False).replace("</", "<\\/"))
 
 
 def main():
