@@ -230,14 +230,14 @@ def scope_sel(sel):
         if not s:
             continue
         if s == ":root" or s in ("html", "body"):
-            out.append("#container")
+            out.append(".km-page")
         elif s.startswith("#container"):
             out.append(s)
         elif BARE_TAG.match(s):
             # Règles sur balises nues : limitées aux pages .km-page (jamais à l'accueil .km-home)
-            out.append("#container .km-page " + s)
+            out.append(".km-page " + s)
         else:
-            out.append("#container " + s)
+            out.append(".km-page " + s)
     return ", ".join(out)
 
 
