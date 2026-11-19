@@ -172,9 +172,14 @@ LANG_BAR = ('<div class="km-lang">'
 
 
 def build_home():
+    """Accueil : les clés de traduction sont préfixées h_ (dictionnaire commun)."""
+    return re.sub(r'data-i18n="(\w+)"', r'data-i18n="h_\1"', _build_home_raw())
+
+
+def _build_home_raw():
     photo = "data:image/jpeg;base64," + base64.b64encode(open(build.PHOTO, "rb").read()).decode()
     t = HOME_T["fr"]
-    script = LANG_SCRIPT.replace("__DICT__", json.dumps(HOME_T, ensure_ascii=False))
+    script = ""
     return f"""<div class="km-home">
   <div class="km-inner">
     <div class="km-lang">
@@ -280,6 +285,7 @@ html,body{background:#F5F2EA!important;margin:0!important;padding:0!important}
 #container *{box-sizing:border-box}
 #container .logo-dot{background:#C9A45C!important;color:#0E0D0B!important}
 #container .logo{font-family:'Playfair Display',Georgia,serif;font-style:italic;font-weight:400;font-size:1.2rem;color:#F3EDE2;white-space:nowrap}
+#container .navbar{background:#1C1812!important}
 #container .navbar a.logo, #container .navbar a.logo:link, #container .navbar a.logo:visited, #container .navbar a.logo:hover, #container .navbar a.logo:active{color:#F3EDE2!important;text-decoration:none!important}
 #container .navbar a.cta-nav, #container .navbar a.cta-nav:link, #container .navbar a.cta-nav:visited{color:#1C1812!important;text-decoration:none!important}
 #navigation{max-width:1160px;margin:18px auto 0;padding:0 5%;text-align:center}
@@ -373,12 +379,13 @@ def ti(key, tag="span", extra=""):
 
 def page_dict():
     """Dictionnaire de langue commun : textes du site + textes contact / CV."""
-    return {l: {**build.T[l], **EMBED_T[l]} for l in ("fr", "ar", "en")}
+    return {l: {**build.T[l], **EMBED_T[l], **{"h_" + k: v for k, v in HOME_T[l].items()}}
+            for l in ("fr", "ar", "en")}
 
 
 def build_contact():
     photo = "data:image/jpeg;base64," + base64.b64encode(open(build.PHOTO, "rb").read()).decode()
-    script = LANG_SCRIPT.replace("__DICT__", json.dumps(page_dict(), ensure_ascii=False))
+    script = ""
     return f"""<div class="km-home km-contact">
   <div class="km-inner">
     {LANG_BAR}
@@ -401,7 +408,7 @@ CV_PDF_URL = "https://github.com/mossaab812/jimdo/raw/arena/094ed348-jimdo/site/
 
 
 def build_cv():
-    script = LANG_SCRIPT.replace("__DICT__", json.dumps(page_dict(), ensure_ascii=False))
+    script = ""
     return f"""<div class="km-home km-cv">
   <div class="km-inner">
     {LANG_BAR}
@@ -456,9 +463,11 @@ LINKS = (
 )
 
 
-NAV_SCRIPT = """<script>
+ENGINE_TEMPLATE = """<script>
 (function(){
-  /* Traduction de la barre du haut et du menu Jimdo (suit le choix FR / AR / EN des pages) */
+  /* Moteur de langue (FR par défaut, puis le choix est gardé d'une page à l'autre).
+     Vit dans le Template : c'est le seul script que Jimdo exécute de façon fiable. */
+  var DICT = __DICT__;
   var NAV = {
     'accueil': {ar: 'الرئيسية', en: 'Home'},
     'a propos de moi': {ar: 'من أنا', en: 'About me'},
@@ -469,20 +478,38 @@ NAV_SCRIPT = """<script>
     'bienvenue sur mon portfolio': {ar: 'مرحباً بكم في موقعي', en: 'Welcome to my portfolio'}
   };
   function norm(s){ return s.normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/\s+/g,' ').trim().toLowerCase(); }
-  function apply(l){
+  function applyNav(l){
     document.querySelectorAll('#navigation a, #container .navbar a').forEach(function(a){
       if (a.dataset.fr === undefined) a.dataset.fr = a.textContent;
       var t = NAV[norm(a.dataset.fr)];
       a.textContent = (l !== 'fr' && t && t[l]) ? t[l] : a.dataset.fr;
     });
-    var root = document.getElementById('container');
-    if (root) root.setAttribute('dir', l === 'ar' ? 'rtl' : 'ltr');
   }
-  document.addEventListener('km-lang', function(e){ apply(e.detail); });
+  function setLang(l){
+    var d = DICT[l]; if (!d) return;
+    var dir = (l === 'ar') ? 'rtl' : 'ltr';
+    document.querySelectorAll('[data-i18n]').forEach(function(el){
+      var k = el.getAttribute('data-i18n'); if (d[k] !== undefined) el.textContent = d[k];
+    });
+    document.querySelectorAll('.km-lang').forEach(function(bar){
+      bar.querySelectorAll('button').forEach(function(b){ b.classList.toggle('on', b.getAttribute('data-lang') === l); });
+    });
+    document.querySelectorAll('.km-home, .km-page, #container').forEach(function(r){ r.setAttribute('dir', dir); });
+    applyNav(l);
+    try { localStorage.setItem('km_lang', l); } catch(e){}
+  }
+  document.addEventListener('click', function(e){
+    var t = e.target, b = (t && t.closest) ? t.closest('.km-lang button') : null;
+    if (b) { setLang(b.getAttribute('data-lang')); }
+  });
   var saved = null; try { saved = localStorage.getItem('km_lang'); } catch(e){}
-  if (saved) apply(saved);
+  if (saved && DICT[saved]) { setLang(saved); }
 })();
 </script>"""
+
+
+def engine_script():
+    return ENGINE_TEMPLATE.replace("__DICT__", json.dumps(page_dict(), ensure_ascii=False))
 
 
 def main():
@@ -532,7 +559,7 @@ def main():
 </div>
 """
     with open(os.path.join(HERE, "template.html"), "w", encoding="utf-8") as f:
-        f.write(nbsp_icons(template) + "\n" + NAV_SCRIPT)
+        f.write(nbsp_icons(template) + "\n" + engine_script())
 
     os.makedirs(os.path.join(HERE, "pages"), exist_ok=True)
     with open(os.path.join(HERE, "pages", "accueil.html"), "w", encoding="utf-8") as f:
@@ -542,7 +569,7 @@ def main():
     with open(os.path.join(HERE, "pages", "mon-cv.html"), "w", encoding="utf-8") as f:
         f.write(build_cv())
     for src, fname in PAGE_FILE.items():
-        lang_script = LANG_SCRIPT.replace("__DICT__", json.dumps(page_dict(), ensure_ascii=False))
+        lang_script = ""
         body = ('<div class="km-page">\n' + LANG_BAR + "\n"
                 + nbsp_icons(build.fix_icons(jimdo_links(build.BODY[src]))) + '\n</div>')
         with open(os.path.join(HERE, "pages", fname), "w", encoding="utf-8") as f:
