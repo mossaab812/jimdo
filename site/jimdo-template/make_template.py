@@ -280,6 +280,8 @@ html,body{background:#F5F2EA!important;margin:0!important;padding:0!important}
 #container *{box-sizing:border-box}
 #container .logo-dot{background:#C9A45C!important;color:#0E0D0B!important}
 #container .logo{font-family:'Playfair Display',Georgia,serif;font-style:italic;font-weight:400;font-size:1.2rem;color:#F3EDE2;white-space:nowrap}
+#container .navbar a.logo, #container .navbar a.logo:link, #container .navbar a.logo:visited, #container .navbar a.logo:hover, #container .navbar a.logo:active{color:#F3EDE2!important;text-decoration:none!important}
+#container .navbar a.cta-nav, #container .navbar a.cta-nav:link, #container .navbar a.cta-nav:visited{color:#1C1812!important;text-decoration:none!important}
 #navigation{max-width:1160px;margin:18px auto 0;padding:0 5%;text-align:center}
 #navigation ul{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;list-style:none;padding:0;margin:0}
 #navigation li{list-style:none;margin:0;padding:0}
