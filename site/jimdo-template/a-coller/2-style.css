@@ -24,19 +24,19 @@
 .km-page p{color:var(--muted);margin-bottom:14px}
 .km-page /* ---------- Navigation : pilule sombre ---------- */
 .topbar{position:sticky;top:14px;z-index:100;padding:0 5%}
-.km-page .navbar{max-width:1100px;margin:auto;background:var(--dark);border-radius:999px;padding:9px 12px 9px 10px;display:flex;align-items:center;justify-content:space-between;gap:14px;box-shadow:0 14px 34px rgba(28,24,18,.25);position:relative}
-.km-page .logo{display:flex;align-items:center;gap:10px;color:#fff;font-weight:800;font-size:1.05rem;padding-left:4px}
-.km-page .logo-dot{width:36px;height:36px;border-radius:50%;background:var(--amber);display:grid;place-items:center;color:var(--dark);font-weight:800}
+#container .navbar{max-width:1100px;margin:auto;background:var(--dark);border-radius:999px;padding:9px 12px 9px 10px;display:flex;align-items:center;justify-content:space-between;gap:14px;box-shadow:0 14px 34px rgba(28,24,18,.25);position:relative}
+#container .logo{display:flex;align-items:center;gap:10px;color:#fff;font-weight:800;font-size:1.05rem;padding-left:4px}
+#container .logo-dot{width:36px;height:36px;border-radius:50%;background:var(--amber);display:grid;place-items:center;color:var(--dark);font-weight:800}
 .km-page .menu{display:flex;gap:4px;list-style:none;flex-wrap:wrap}
 .km-page .menu a{display:block;padding:8px 13px;border-radius:999px;font-size:.88rem;color:#CFC8B8;font-weight:500;transition:.25s}
 .km-page .menu a:hover{color:#fff}
 .km-page .menu a.on{color:var(--amber);font-weight:700}
-.km-page .navright{display:flex;align-items:center;gap:8px}
+#container .navright{display:flex;align-items:center;gap:8px}
 .km-page .lang{display:flex;gap:4px;background:var(--dark-2);border-radius:999px;padding:4px}
 .km-page .lang button{background:transparent;border:0;color:#CFC8B8;padding:6px 10px;border-radius:999px;cursor:pointer;font-size:.8rem;font-weight:700;transition:.2s}
 .km-page .lang button.on{background:var(--amber);color:var(--dark)}
-.km-page .cta-nav{background:#fff;color:var(--dark);padding:9px 16px;border-radius:999px;font-weight:700;font-size:.85rem;white-space:nowrap}
-.km-page .burger{display:none;background:var(--dark-2);border:0;color:#fff;border-radius:999px;width:40px;height:40px;cursor:pointer}
+#container .cta-nav{background:#fff;color:var(--dark);padding:9px 16px;border-radius:999px;font-weight:700;font-size:.85rem;white-space:nowrap}
+#container .burger{display:none;background:var(--dark-2);border:0;color:#fff;border-radius:999px;width:40px;height:40px;cursor:pointer}
 .km-page /* ---------- Badges, .km-page boutons, .km-page puces ---------- */
 .badge{display:inline-flex;align-items:center;gap:10px;background:#fff;box-shadow:var(--shadow);padding:7px 16px 7px 8px;border-radius:999px;font-size:.88rem;font-weight:600;margin-bottom:24px;animation:float 4s ease-in-out infinite}
 .km-page .badge i{width:26px;height:26px;border-radius:50%;background:var(--dark);color:var(--amber);display:grid;place-items:center;font-size:.7rem}
@@ -139,9 +139,9 @@
 .km-page .form input:focus, .km-page .form textarea:focus{outline:none;border-color:var(--amber);background:#fff;box-shadow:0 0 0 4px rgba(255,164,27,.18)}
 .km-page .form textarea{min-height:140px;resize:vertical}
 .km-page .form .btn{justify-self:center}
-.km-page .social{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:30px}
-.km-page .social a{width:56px;height:56px;border-radius:50%;background:var(--dark);color:#fff;display:grid;place-items:center;font-size:1.2rem;transition:.25s}
-.km-page .social a:hover{background:var(--amber);color:var(--dark);transform:translateY(-4px)}
+#container .social{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:30px}
+#container .social a{width:56px;height:56px;border-radius:50%;background:var(--dark);color:#fff;display:grid;place-items:center;font-size:1.2rem;transition:.25s}
+#container .social a:hover{background:var(--amber);color:var(--dark);transform:translateY(-4px)}
 .km-page .counter{max-width:660px;margin:36px auto 0;text-align:center;background:#fff;border-radius:30px;padding:24px;box-shadow:var(--shadow)}
 .km-page .cta{display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;background:var(--amber);color:var(--dark);border-radius:36px;padding:38px 44px}
 .km-page .cta h2{color:var(--dark);font-size:2.3rem;margin:0}
@@ -181,11 +181,11 @@ footer{background:var(--dark);color:#CFC8B8;text-align:center;padding:40px 5% 34
 
 }
 @media (max-width:760px){
-.km-page .burger{display:block}
+#container .burger{display:block}
 .km-page .menu{display:none;position:absolute;top:calc(100% + 10px);left:0;right:0;background:var(--dark);border-radius:26px;flex-direction:column;padding:12px;gap:4px}
 .km-page .menu.open{display:flex}
 .km-page .menu a{padding:12px 16px}
-.km-page .navbar{flex-wrap:wrap}
+#container .navbar{flex-wrap:wrap}
 .km-page h1{font-size:2.6rem}
 .km-page h2{font-size:2rem}
 .km-page .ft1, .km-page .ft2, .km-page .ft3, .km-page .ft4{font-size:.75rem;padding:7px 12px}

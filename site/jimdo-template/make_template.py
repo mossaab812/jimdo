@@ -222,6 +222,7 @@ def build_home():
 
 
 # ---------- CSS scopé sous #container ----------
+CHROME_CLS = re.compile(r"^\.(topbar|navbar|logo|logo-dot|navright|cta-nav|social|burger)(?![\w-])")
 BARE_TAG = re.compile(r"^(\*|(h[1-6]|p|section|footer|img|a|button|ul|li|span|div|nav|html)(?![\w-]))")
 def scope_sel(sel):
     out = []
@@ -233,6 +234,9 @@ def scope_sel(sel):
             out.append(".km-page")
         elif s.startswith("#container"):
             out.append(s)
+        elif CHROME_CLS.match(s):
+            # Éléments du Template (barre du haut, pied de page) : restent sous #container
+            out.append("#container " + s)
         elif BARE_TAG.match(s):
             # Règles sur balises nues : limitées aux pages .km-page (jamais à l'accueil .km-home)
             out.append(".km-page " + s)
